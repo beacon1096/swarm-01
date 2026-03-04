@@ -1,0 +1,18 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: harvester-csi-driver
+spec:
+  chart:
+    spec:
+      chart: harvester-csi-driver
+      version: 0.1.25
+      sourceRef:
+        kind: HelmRepository
+        name: harvester-charts
+  interval: 1h
+  values:
+    cloudConfig:
+      secretName: harvester-cloud-config
+    kubeletRootDir: /var/lib/kubelet

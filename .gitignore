@@ -11,7 +11,7 @@
 /cluster.yaml
 /nodes.yaml
 # Kubernetes
-kubeconfig
+*kubeconfig
 talosconfig
 # Misc.
 .private/
