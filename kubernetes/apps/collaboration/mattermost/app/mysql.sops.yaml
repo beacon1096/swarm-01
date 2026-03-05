@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mattermost-mysql-secret
+stringData:
+  SECRET_MATTERMOST_MYSQL_ROOT_PASSWORD: ENC[AES256_GCM,data:4FjHIoTkOP5zZO8UzsGUov9hak038KAp8ukLSZ5vGcM=,iv:72MT4IU/MVGYu6GlHLJi3zlwAm4/CYyTIzhbzwtUnjk=,tag:1db1xTL3OS1YeuyIrxBDvw==,type:str]
+  SECRET_MATTERMOST_MYSQL_PASSWORD: ENC[AES256_GCM,data:KQF8U9YbfIZHllyHw2n8P7wD0xeSRUMm2ZvQvAdcV9Y=,iv:fEo19Fk/dTNVYmi2I3OxUCk0tgcwvYO0ygZCIIms1ek=,tag:Lw4CcxPLnLkaP4ywJs2SuA==,type:str]
+sops:
+  age:
+    - recipient: age16axld0tr7u7rhkm0dfcj0elmw8lzqxsm8rykrdafrrk5dxt3g5equwm578
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBsYWk2UzE2YmlrQ0ZoSVpZ
+        aXZaWHlvbE5HcTF6VXBKa2xiOTdDTTExakJFCjZxdzMxek5xYjUrdkgxbzdqYm90
+        T0lYTWxDbEM2VVdOaEp6TGl1OWFNZmsKLS0tIHFpZEFwQjZPL21MYVg5czRLSXZs
+        ejhQZ1JZdzM1UXpwdXdrRkxsTDQ2eDQKmxRaLg/o+35gRpOOxzGJ4ysvsQFRNOM7
+        jXYlykmcOgryUapwz+NUZLGeZ7qkw++0tyGRPOXot1e25jKDUww2dg==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2026-03-05T17:24:50Z"
+  mac: ENC[AES256_GCM,data:gFyuoJhW4bqcUdiYxJETCz1jeWRa2gtUC2Cs2MXV+tYBcqV5ZtGxyCgxoVTJIsTVB+w0665eerZhnc1sYibwO1BQb9WhG72Z91RyTDkZGxb5O8CBH56KKLMwHQ95Wcsg9yNImr96KFt+8jxcw83VO/GTRZiGNP/CbBTJPbKNk6A=,iv:YdY0Z35Kuga5ZP/UtkOPxf48pIMXMoN5bNlLGb8wzlE=,tag:CrwsMnUSFgYKM/QuiL6mjA==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.12.1

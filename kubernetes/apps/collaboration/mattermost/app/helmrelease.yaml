@@ -24,11 +24,11 @@ spec:
       limits:
         memory: 1Gi
     mysql:
-      enabled: false
-    postgresql:
       enabled: true
-      postgresqlUsername: mattermost
-      postgresqlDatabase: mattermost
+      mysqlRootPassword: ${SECRET_MATTERMOST_MYSQL_ROOT_PASSWORD}
+      mysqlUser: mattermost
+      mysqlPassword: ${SECRET_MATTERMOST_MYSQL_PASSWORD}
+      mysqlDatabase: mattermost
       persistence:
         enabled: true
         storageClass: harvester
