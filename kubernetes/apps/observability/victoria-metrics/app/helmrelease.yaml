@@ -1,0 +1,108 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-metrics
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: victoria-metrics-k8s-stack
+  interval: 1h
+  values:
+    # -- VM Operator: auto-convert Prometheus CRDs (ServiceMonitor, PodMonitor, etc.)
+    victoria-metrics-operator:
+      enabled: true
+      operator:
+        disable_prometheus_converter: false
+
+    # -- VMSingle: metrics storage (single binary, much lighter than Prometheus)
+    vmsingle:
+      enabled: true
+      spec:
+        retentionPeriod: "90d"
+        replicaCount: 1
+        storage:
+          accessModes: ["ReadWriteOnce"]
+          storageClassName: harvester
+          resources:
+            requests:
+              storage: 20Gi
+
+    # -- Do NOT use cluster mode for a small homelab
+    vmcluster:
+      enabled: false
+
+    # -- VMAgent: lightweight metrics scraper
+    vmagent:
+      enabled: true
+      spec:
+        scrapeInterval: 30s
+        selectAllByDefault: true
+        externalLabels:
+          cluster: swarm-01
+
+    # -- VMAlert: alerting rules evaluation
+    vmalert:
+      enabled: true
+      spec:
+        selectAllByDefault: true
+        evaluationInterval: 30s
+
+    # -- Alertmanager
+    alertmanager:
+      enabled: true
+      spec:
+        replicaCount: 1
+
+    # -- Grafana
+    grafana:
+      enabled: true
+      plugins:
+        - victoriametrics-metrics-datasource
+        - victoriametrics-logs-datasource
+      persistence:
+        enabled: true
+        storageClassName: harvester
+        size: 2Gi
+      sidecar:
+        dashboards:
+          enabled: true
+          searchNamespace: ALL
+        datasources:
+          enabled: true
+          searchNamespace: ALL
+    defaultDatasources:
+      extra:
+        - name: VictoriaLogs
+          type: victoriametrics-logs-datasource
+          access: proxy
+          url: http://victoria-logs-server.observability.svc:9428
+          isDefault: false
+
+    # -- Default dashboards and alerting rules
+    defaultDashboards:
+      enabled: true
+    defaultRules:
+      create: true
+
+    # -- Scrapers that work on Talos
+    kubelet:
+      enabled: true
+    kubeApiServer:
+      enabled: true
+    coreDns:
+      enabled: true
+    kube-state-metrics:
+      enabled: true
+    prometheus-node-exporter:
+      enabled: true
+
+    # -- Disable scrapers that DON'T work on Talos Linux
+    kubeControllerManager:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    kubeProxy:
+      enabled: false
+    kubeEtcd:
+      enabled: false

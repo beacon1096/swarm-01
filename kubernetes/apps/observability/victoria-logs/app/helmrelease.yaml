@@ -1,0 +1,23 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-logs
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: victoria-logs-single
+  interval: 1h
+  values:
+    server:
+      retentionPeriod: 30d
+      persistentVolume:
+        enabled: true
+        storageClassName: harvester
+        size: 20Gi
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          memory: 512Mi

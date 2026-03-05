@@ -1,0 +1,15 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-logs-collector
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: victoria-logs-collector
+  interval: 1h
+  values:
+    remoteWrite:
+      - url: http://victoria-logs-server.observability.svc:9428
+    collector:
+      includePodLabels: true
