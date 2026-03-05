@@ -1,0 +1,58 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: forgejo
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: forgejo-charts
+  interval: 1h
+  values:
+    image:
+      rootless: true
+    service:
+      http:
+        type: ClusterIP
+        port: 3000
+      ssh:
+        type: ClusterIP
+        port: 22
+    ingress:
+      enabled: false
+    persistence:
+      enabled: true
+      storageClass: harvester
+      size: 20Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 1Gi
+    gitea:
+      admin:
+        existingSecret: forgejo-admin-secret
+      config:
+        server:
+          DOMAIN: forgejo.${SECRET_DOMAIN}
+          ROOT_URL: https://forgejo.${SECRET_DOMAIN}
+          SSH_DOMAIN: forgejo.${SECRET_DOMAIN}
+          DISABLE_SSH: true
+        service:
+          DISABLE_REGISTRATION: false
+          REQUIRE_SIGNIN_VIEW: false
+          DEFAULT_KEEP_EMAIL_PRIVATE: true
+        openid:
+          ENABLE_OPENID_SIGNIN: true
+          ENABLE_OPENID_SIGNUP: false
+        mirror:
+          ENABLED: true
+          DEFAULT_INTERVAL: 8h
+      oauth:
+        - name: "authentik"
+          provider: "openidConnect"
+          existingSecret: forgejo-authentik-secret
+          autoDiscoverUrl: "https://id.${SECRET_DOMAIN}/application/o/forgejo/.well-known/openid-configuration"
+          scopes: "openid email profile"
+          iconUrl: "https://id.${SECRET_DOMAIN}/static/dist/assets/icons/icon.png"
