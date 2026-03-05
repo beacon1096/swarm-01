@@ -6,4 +6,5 @@ resources:
   - ./helmrelease.yaml
   - ./helmrepository.yaml
   - ./httproute.yaml
-  - ./mysql.sops.yaml
+  - ./postgresql.sops.yaml
+  - ./postgresql.yaml

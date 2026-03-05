@@ -10,7 +10,7 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
-      - name: mattermost-mysql-secret
+      - name: mattermost-pg-secret
         kind: Secret
   prune: true
   sourceRef:

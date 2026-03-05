@@ -24,15 +24,11 @@ spec:
       limits:
         memory: 1Gi
     mysql:
+      enabled: false
+    externalDB:
       enabled: true
-      mysqlRootPassword: ${SECRET_MATTERMOST_MYSQL_ROOT_PASSWORD}
-      mysqlUser: mattermost
-      mysqlPassword: ${SECRET_MATTERMOST_MYSQL_PASSWORD}
-      mysqlDatabase: mattermost
-      persistence:
-        enabled: true
-        storageClass: harvester
-        size: 8Gi
+      externalDriverType: postgres
+      externalConnectionString: "mattermost:${SECRET_MATTERMOST_PG_PASSWORD}@mattermost-postgresql:5432/mattermost?sslmode=disable&connect_timeout=10"
     persistence:
       data:
         enabled: true
