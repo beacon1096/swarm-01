@@ -10,8 +10,6 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
-      - name: mattermost-pg-secret
-        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository

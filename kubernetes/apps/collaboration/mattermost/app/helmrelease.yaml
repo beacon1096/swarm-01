@@ -28,7 +28,7 @@ spec:
     externalDB:
       enabled: true
       externalDriverType: postgres
-      externalConnectionString: "mattermost:${SECRET_MATTERMOST_PG_PASSWORD}@mattermost-postgresql:5432/mattermost?sslmode=disable&connect_timeout=10"
+      externalConnectionString: "mattermost:mattermost-pg@mattermost-postgresql:5432/mattermost?sslmode=disable&connect_timeout=10"
     persistence:
       data:
         enabled: true
