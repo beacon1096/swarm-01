@@ -32,7 +32,7 @@ spec:
             type: PathPrefix
             value: /.well-known/matrix
       backendRefs:
-        - name: matrix-synapse-wellknown
+        - name: matrix-synapse-wellknown-lighttpd
           port: 80
 ---
 # Element Web client
