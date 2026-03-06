@@ -86,9 +86,11 @@ spec:
           storageClass: harvester
           size: 20Gi
 
-    # -- No workers needed for <10 users, skip Redis
+    # -- Redis required by chart even without workers
     redis:
-      enabled: false
+      enabled: true
+      auth:
+        enabled: false
 
     ingress:
       enabled: false

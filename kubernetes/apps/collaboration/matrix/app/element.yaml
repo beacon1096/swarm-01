@@ -8,8 +8,8 @@ data:
     {
       "default_server_config": {
         "m.homeserver": {
-          "base_url": "https://matrix.${SECRET_DOMAIN}",
-          "server_name": "${SECRET_DOMAIN}"
+          "base_url": "https://matrix.beaco.works",
+          "server_name": "beaco.works"
         }
       },
       "brand": "Element",
@@ -23,10 +23,10 @@ data:
       "default_federate": false,
       "default_theme": "light",
       "room_directory": {
-        "servers": ["${SECRET_DOMAIN}"]
+        "servers": ["beaco.works"]
       },
       "enable_presence_by_hs_url": {
-        "https://matrix.${SECRET_DOMAIN}": false
+        "https://matrix.beaco.works": false
       }
     }
 ---
