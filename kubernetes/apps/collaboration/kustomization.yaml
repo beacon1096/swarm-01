@@ -8,4 +8,4 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./mattermost/ks.yaml
+  - ./matrix/ks.yaml

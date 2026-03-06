@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: mattermost-charts
+  name: ananace
 spec:
   interval: 1h
-  url: https://helm.mattermost.com
+  url: https://ananace.gitlab.io/charts

@@ -1,0 +1,94 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: matrix-synapse
+spec:
+  chart:
+    spec:
+      chart: matrix-synapse
+      version: 3.12.22
+      sourceRef:
+        kind: HelmRepository
+        name: ananace
+  interval: 1h
+  values:
+    # -- Matrix server name (appears in MXIDs: @user:beaco.works)
+    serverName: ${SECRET_DOMAIN}
+    # -- Public URL where Synapse is actually reachable
+    publicServerName: matrix.${SECRET_DOMAIN}
+
+    # -- Well-known delegation so @user:beaco.works resolves to matrix.beaco.works
+    wellknown:
+      enabled: true
+      server:
+        m.server: "matrix.${SECRET_DOMAIN}:443"
+      client:
+        m.homeserver:
+          base_url: "https://matrix.${SECRET_DOMAIN}"
+
+    config:
+      reportStats: false
+      enableRegistration: false
+
+    extraConfig:
+      # -- Private server, disable federation
+      federation_domain_whitelist: []
+      allow_public_rooms_over_federation: false
+      allow_public_rooms_without_auth: false
+
+    # -- OIDC credentials stored in a Secret (not ConfigMap) via extraSecrets
+    extraSecrets:
+      oidc_providers:
+        - idp_id: authentik
+          idp_name: "Authentik"
+          discover: true
+          issuer: "https://id.${SECRET_DOMAIN}/application/o/matrix/"
+          client_id: "ECe7Lng2YKh13UTZYPdjMyrBy3IxXuSfZUj5YFDp"
+          client_secret: "lYCTeZPsvhfNH760JZLAbGP9viLwctAolDEo1RiZ3c2SpaxJh3SEQ1Vu4kcnzCC8trmtjW7Az9FPTeX06SahpKTB93oX0pOqKT4tc7zG3hvyPwWvIBIbCMHM5MWRzFXX"
+          scopes: ["openid", "profile", "email"]
+          user_mapping_provider:
+            config:
+              localpart_template: "{{ user.preferred_username }}"
+              display_name_template: "{{ user.name }}"
+          backchannel_logout_enabled: true
+
+    synapse:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          memory: 1500Mi
+
+    # -- Signing key persistence (required - Synapse generates on first run)
+    signingkey:
+      job:
+        enabled: true
+
+    persistence:
+      enabled: true
+      storageClass: harvester
+      accessMode: ReadWriteOnce
+      size: 20Gi
+
+    # -- Bundled PostgreSQL (lc_collate=C required by Synapse, chart pre-configures this)
+    postgresql:
+      enabled: true
+      auth:
+        username: synapse
+        database: synapse
+        existingSecret: matrix-synapse-secret
+        secretKeys:
+          userPasswordKey: postgresPassword
+      primary:
+        persistence:
+          storageClass: harvester
+          size: 20Gi
+
+    # -- No workers needed for <10 users, skip Redis
+    redis:
+      enabled: false
+
+    ingress:
+      enabled: false
