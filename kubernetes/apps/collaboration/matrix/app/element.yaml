@@ -50,7 +50,7 @@ spec:
           ports:
             - containerPort: 80
           env:
-            - name: PORT
+            - name: ELEMENT_WEB_PORT
               value: "80"
           resources:
             requests:

@@ -6,4 +6,5 @@ resources:
   - ./helmrelease.yaml
   - ./helmrepository.yaml
   - ./httproute.yaml
+  - ./redis-secret.sops.yaml
   - ./secret.sops.yaml
