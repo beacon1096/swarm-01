@@ -80,6 +80,7 @@ spec:
         database: synapse
         existingSecret: matrix-synapse-secret
         secretKeys:
+          adminPasswordKey: postgres-password
           userPasswordKey: postgresPassword
       primary:
         persistence:

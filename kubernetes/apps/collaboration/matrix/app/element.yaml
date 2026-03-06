@@ -49,6 +49,9 @@ spec:
           image: ghcr.io/element-hq/element-web:v1.12.11
           ports:
             - containerPort: 80
+          env:
+            - name: PORT
+              value: "80"
           resources:
             requests:
               cpu: 10m
