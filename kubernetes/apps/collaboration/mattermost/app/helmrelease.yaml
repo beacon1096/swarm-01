@@ -66,6 +66,10 @@ spec:
         value: "Sign in with Authentik"
       - name: MM_SERVICESETTINGS_ALLOWEDUNTRUSTEDINTERNALCONNECTIONS
         value: ""
+      - name: MM_EMAILSETTINGS_ENABLESIGNUPWITHEMAIL
+        value: "false"
+      - name: MM_EMAILSETTINGS_ENABLESIGNINWITHEMAIL
+        value: "true"
     metrics:
       enabled: true
       serviceMonitor:
