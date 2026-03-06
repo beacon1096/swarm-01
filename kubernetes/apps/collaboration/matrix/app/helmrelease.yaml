@@ -92,6 +92,8 @@ spec:
       enabled: true
       auth:
         enabled: false
+        existingSecret: matrix-synapse-secret
+        existingSecretPasswordKey: redis-password
 
     ingress:
       enabled: false
