@@ -1,0 +1,33 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: coder-postgresql
+spec:
+  chart:
+    spec:
+      chart: postgresql
+      version: "16.x"
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami-charts
+  interval: 1h
+  values:
+    auth:
+      username: coder
+      database: coder
+      existingSecret: coder-secret
+      secretKeys:
+        adminPasswordKey: pg-superuser-password
+        userPasswordKey: pg-password
+    primary:
+      persistence:
+        enabled: true
+        storageClass: harvester
+        size: 10Gi
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          memory: 512Mi
