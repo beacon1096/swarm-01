@@ -32,7 +32,7 @@ spec:
             image:
               repository: ghcr.io/zhaofengli/attic
               tag: latest
-            args: ["--config", "/config/server.toml", "server"]
+            args: ["--config", "/config/server.toml"]
             ports:
               - containerPort: 8080
             resources:
