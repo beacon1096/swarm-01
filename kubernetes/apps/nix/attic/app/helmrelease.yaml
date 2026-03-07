@@ -1,0 +1,73 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: attic
+spec:
+  interval: 15m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.6.2
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: attic
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: attic
+  interval: 1h
+  dependsOn:
+    - name: attic-postgresql
+  values:
+    controllers:
+      attic:
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/zhaofengli/attic
+              tag: latest
+            args: ["--config", "/config/server.toml", "server"]
+            ports:
+              - containerPort: 8080
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+    service:
+      app:
+        ports:
+          http:
+            port: 8080
+    persistence:
+      config:
+        type: secret
+        name: attic-secret
+        globalMounts:
+          - path: /config/server.toml
+            subPath: server.toml
+            readOnly: true
+      store:
+        type: persistentVolumeClaim
+        storageClass: harvester
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        globalMounts:
+          - path: /var/lib/attic/store
