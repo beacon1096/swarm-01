@@ -14,6 +14,10 @@ spec:
         namespace: development
   interval: 1h
   values:
+    image:
+      registry: docker.io
+      repository: bitnami/postgresql
+      digest: sha256:7a695433df7728a4efa0c66310f4e9e71a37f3fbbc1bb179b8308896dff40a6c
     auth:
       username: attic
       database: attic
