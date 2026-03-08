@@ -10,3 +10,4 @@ resources:
   - ./namespace.yaml
   - ./forgejo/ks.yaml
   - ./coder/ks.yaml
+  - ./atuin/ks.yaml
