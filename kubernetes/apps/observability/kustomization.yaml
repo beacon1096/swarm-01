@@ -11,3 +11,4 @@ resources:
   - ./victoria-metrics/ks.yaml
   - ./victoria-logs/ks.yaml
   - ./victoria-logs-collector/ks.yaml
+  - ./uptime-kuma/ks.yaml
