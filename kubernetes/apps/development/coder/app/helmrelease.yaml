@@ -45,7 +45,7 @@ spec:
         - name: CODER_OIDC_USERNAME_FIELD
           value: "preferred_username"
         - name: CODER_OIDC_EMAIL_DOMAIN
-          value: "${SECRET_DOMAIN}"
+          value: "${SECRET_EMAIL_DOMAIN}"
       resources:
         requests:
           cpu: 100m
