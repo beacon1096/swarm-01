@@ -1,0 +1,45 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: forgejo-runner
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: forgejo-runner
+  interval: 1h
+  values:
+    global:
+      image:
+        pullPolicy: Always
+    image:
+      registry: registry.beaco.works
+      repository: code.forgejo.org/forgejo/runner
+      tag: "12.7.1-amd64"
+    runner:
+      config:
+        create: true
+        existingInitSecret: "forgejo-runner-secret"
+        file:
+          runner:
+            labels:
+              - "ubuntu-latest:docker://node:20.12-bookworm"
+              - "nix-builder:docker://nixos/nix:latest"
+    kubectl:
+      image:
+        registry: registry.beaco.works
+        repository: docker.io/alpine/kubectl
+        tag: "1.35.2"
+    dind:
+      image:
+        registry: registry.beaco.works
+        repository: docker.io/library/docker
+        tag: 29.2.1-dind-amd64
+      resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        limits:
+          memory: 2Gi
+    securityContext:
+      privileged: true

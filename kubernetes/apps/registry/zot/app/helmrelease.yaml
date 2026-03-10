@@ -15,8 +15,10 @@ spec:
   values:
     replicaCount: 1
     service:
-      type: ClusterIP
+      type: LoadBalancer
       port: 5000
+      annotations:
+        lbipam.cilium.io/ips: "172.16.107.41"
     ingress:
       enabled: false
     persistence:

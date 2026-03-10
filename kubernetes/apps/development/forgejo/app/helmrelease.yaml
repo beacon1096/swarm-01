@@ -39,6 +39,8 @@ spec:
           ROOT_URL: https://forgejo.${SECRET_DOMAIN}
           SSH_DOMAIN: forgejo.${SECRET_DOMAIN}
           DISABLE_SSH: true
+        actions:
+          ENABLED: true
         service:
           DISABLE_REGISTRATION: false
           REQUIRE_SIGNIN_VIEW: false
