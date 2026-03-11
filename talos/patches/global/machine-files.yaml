@@ -7,16 +7,4 @@ machine:
           discard_unpacked_layers = false
         [plugins."io.containerd.cri.v1.runtime"]
           device_ownership_from_security_context = true
-    - op: create
-      path: /etc/cri/conf.d/zot-mirror.part
-      content: |
-        [host."http://172.16.107.41:5000/docker.io"]
-          capabilities = ["pull", "resolve"]
-        [host."http://172.16.107.41:5000/ghcr.io"]
-          capabilities = ["pull", "resolve"]
-        [host."http://172.16.107.41:5000/k8s.io"]
-          capabilities = ["pull", "resolve"]
-        [host."http://172.16.107.41:5000/quay.io"]
-          capabilities = ["pull", "resolve"]
-        [host."http://172.16.107.41:5000/elastic.co"]
-          capabilities = ["pull", "resolve"]
+

@@ -1,0 +1,81 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mem0-neo4j
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: mem0
+  interval: 1h
+  timeout: 15m
+  install:
+    disableWait: true
+  upgrade:
+    disableWait: true
+  values:
+    defaultPodOptions:
+      terminationGracePeriodSeconds: 30
+    controllers:
+      neo4j:
+        replicas: 1
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: docker.io/neo4j
+              tag: 5.26.4
+            env:
+              NEO4J_AUTH:
+                valueFrom:
+                  secretKeyRef:
+                    name: mem0-secret
+                    key: neo4j-auth
+              NEO4J_PLUGINS: '["apoc"]'
+              NEO4J_apoc_export_file_enabled: "true"
+              NEO4J_apoc_import_file_enabled: "true"
+              NEO4J_apoc_import_file_use__neo4j__config: "true"
+            ports:
+              - containerPort: 7474
+              - containerPort: 7687
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["wget", "-qO-", "http://localhost:7474"]
+                  initialDelaySeconds: 90
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["wget", "-qO-", "http://localhost:7474"]
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 10
+    service:
+      app:
+        controller: neo4j
+        ports:
+          http:
+            port: 7474
+          bolt:
+            port: 7687
+    persistence:
+      data:
+        enabled: true
+        storageClass: harvester
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        globalMounts:
+          - path: /data

@@ -12,6 +12,8 @@ spec:
     spegel:
       containerdSock: /run/containerd/containerd.sock
       containerdRegistryConfigPath: /etc/cri/conf.d/hosts
+      additionalMirrorTargets:
+        - http://172.16.107.41:5000
     service:
       registry:
         hostPort: 29999

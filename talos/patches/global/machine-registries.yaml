@@ -1,0 +1,6 @@
+machine:
+  registries:
+    mirrors:
+      172.16.107.41:5000:
+        endpoints:
+          - http://172.16.107.41:5000

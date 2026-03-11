@@ -1,0 +1,77 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mem0-postgresql
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: mem0
+  interval: 1h
+  timeout: 15m
+  install:
+    disableWait: true
+  upgrade:
+    disableWait: true
+  values:
+    defaultPodOptions:
+      terminationGracePeriodSeconds: 30
+    controllers:
+      postgresql:
+        replicas: 1
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: docker.io/ankane/pgvector
+              tag: v0.5.1
+            env:
+              PGDATA: /var/lib/postgresql/data/pgdata
+              POSTGRES_USER: mem0
+              POSTGRES_DB: mem0
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: mem0-secret
+                    key: pg-password
+            ports:
+              - containerPort: 5432
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["pg_isready", "-U", "mem0", "-d", "mem0"]
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["pg_isready", "-U", "mem0", "-d", "mem0"]
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+    service:
+      app:
+        controller: postgresql
+        ports:
+          postgres:
+            port: 5432
+    persistence:
+      data:
+        enabled: true
+        storageClass: harvester
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        globalMounts:
+          - path: /var/lib/postgresql/data
