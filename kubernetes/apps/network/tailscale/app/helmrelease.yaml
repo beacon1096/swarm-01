@@ -15,3 +15,11 @@ spec:
     oauth:
       clientId: "${SECRET_TAILSCALE_OAUTH_CLIENT_ID}"
       clientSecret: "${SECRET_TAILSCALE_OAUTH_CLIENT_SECRET}"
+    operatorConfig:
+      image:
+        repository: registry.beaco.works/docker.io/tailscale/k8s-operator
+        tag: v1.94.2
+    proxyConfig:
+      image:
+        repository: registry.beaco.works/docker.io/tailscale/tailscale
+        tag: v1.94.2
