@@ -3,9 +3,10 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: mem0
+  namespace: flux-system
 spec:
   interval: 1h
-  path: ./kubernetes/apps/mem0/mem0/app
+  path: ./kubernetes/apps/ai/mem0/app
   postBuild:
     substituteFrom:
       - name: cluster-secrets
@@ -14,6 +15,5 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-    namespace: flux-system
-  targetNamespace: mem0
+  targetNamespace: ai
   wait: false

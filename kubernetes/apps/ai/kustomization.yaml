@@ -1,7 +1,7 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: mem0
+namespace: ai
 
 components:
   - ../../components/sops
@@ -9,3 +9,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./mem0/ks.yaml
+  - ./eliza/ks.yaml

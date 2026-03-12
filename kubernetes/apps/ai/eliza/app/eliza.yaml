@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eliza
+  labels:
+    app: eliza
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eliza
+  template:
+    metadata:
+      labels:
+        app: eliza
+    spec:
+      containers:
+      - name: eliza
+        image: elizaos/eliza:latest
+        imagePullPolicy: IfNotPresent
+        command: ["node", "--max-old-space-size=4096", "dist/index.js", "--character=characters/character.json"]
+        env:
+        - name: POSTGRES_URL
+          value: "postgresql://eliza:eliza_password@postgres-eliza:5432/eliza"
+        # Mem0 Config (No auth required by your custom FastAPI wrapper)
+        - name: MEM0_API_URL
+          value: "http://mem0:8000"
+        # Matrix Config
+        - name: MATRIX_SERVER_URL
+          value: "http://matrix-synapse.collaboration.svc.cluster.local:8008" # Internal service address
+        - name: MATRIX_ACCESS_TOKEN
+          value: "syt_YWdlbnQtdGVjaG5pY2lhbi12Mg_ZppyEaFfspfzdOvjWlaf_28IVxc"
+        # LLM Config (MacStudio oMLX)
+        - name: OPENAI_API_URL
+          value: "http://100.99.236.96:12306/v1"
+        - name: OPENAI_API_KEY
+          value: "P0o9i8u7y6t5123" # Consider moving to SOPS later
+        - name: SMALL_OPENAI_MODEL
+          value: "Qwen3.5-35B-A3B-4bit"
+        - name: MEDIUM_OPENAI_MODEL
+          value: "Qwen3.5-35B-A3B-4bit"
+        - name: LARGE_OPENAI_MODEL
+          value: "Qwen3.5-35B-A3B-4bit"
+        volumeMounts:
+        - name: character-config
+          mountPath: /app/characters/character.json
+          subPath: character.json
+      volumes:
+      - name: character-config
+        configMap:
+          name: eliza-character
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eliza
+  labels:
+    app: eliza
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+      name: http
+  selector:
+    app: eliza
