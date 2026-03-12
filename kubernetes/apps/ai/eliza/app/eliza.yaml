@@ -30,12 +30,18 @@ spec:
         - name: MATRIX_SERVER_URL
           value: "http://matrix-synapse.collaboration.svc.cluster.local:8008" # Internal service address
         - name: MATRIX_ACCESS_TOKEN
-          value: "syt_YWdlbnQtdGVjaG5pY2lhbi12Mg_ZppyEaFfspfzdOvjWlaf_28IVxc"
+          valueFrom:
+            secretKeyRef:
+              name: cluster-secrets
+              key: eliza.MATRIX_ACCESS_TOKEN
         # LLM Config (MacStudio oMLX)
         - name: OPENAI_API_URL
           value: "http://100.99.236.96:12306/v1"
         - name: OPENAI_API_KEY
-          value: "P0o9i8u7y6t5123" # Consider moving to SOPS later
+          valueFrom:
+            secretKeyRef:
+              name: cluster-secrets
+              key: eliza.OPENAI_API_KEY
         - name: SMALL_OPENAI_MODEL
           value: "Qwen3.5-35B-A3B-4bit"
         - name: MEDIUM_OPENAI_MODEL
