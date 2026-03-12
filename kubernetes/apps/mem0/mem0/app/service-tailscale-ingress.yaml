@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mem0-tailscale
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "mem0"
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/controller: mem0
+    app.kubernetes.io/instance: mem0
+    app.kubernetes.io/name: mem0
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+      protocol: TCP

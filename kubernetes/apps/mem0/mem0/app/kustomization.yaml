@@ -10,4 +10,5 @@ resources:
   - helmrelease-ollama.yaml
   - helmrelease-mem0.yaml
   - service-omlx-egress.yaml
+  - service-tailscale-ingress.yaml
   - httproute.yaml
