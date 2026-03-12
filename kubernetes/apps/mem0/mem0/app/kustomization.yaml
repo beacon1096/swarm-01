@@ -9,4 +9,5 @@ resources:
   - helmrelease-neo4j.yaml
   - helmrelease-ollama.yaml
   - helmrelease-mem0.yaml
+  - service-omlx-egress.yaml
   - httproute.yaml

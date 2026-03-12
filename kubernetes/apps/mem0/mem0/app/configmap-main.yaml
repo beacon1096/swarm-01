@@ -26,6 +26,7 @@ data:
     POSTGRES_USER = os.environ.get("POSTGRES_USER", "postgres")
     POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD", "postgres")
     POSTGRES_COLLECTION_NAME = os.environ.get("POSTGRES_COLLECTION_NAME", "memories")
+    EMBEDDING_MODEL_DIMS = int(os.environ.get("EMBEDDING_MODEL_DIMS", "768"))
 
     NEO4J_URI = os.environ.get("NEO4J_URI", "bolt://neo4j:7687")
     NEO4J_USERNAME = os.environ.get("NEO4J_USERNAME", "neo4j")
@@ -79,6 +80,7 @@ data:
                 "user": POSTGRES_USER,
                 "password": POSTGRES_PASSWORD,
                 "collection_name": POSTGRES_COLLECTION_NAME,
+                "embedding_model_dims": EMBEDDING_MODEL_DIMS,
             },
         },
         "graph_store": {
