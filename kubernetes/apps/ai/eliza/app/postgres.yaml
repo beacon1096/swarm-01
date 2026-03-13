@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: postgres:15-alpine
+        image: public.ecr.aws/docker/library/postgres:15-alpine
         env:
         - name: POSTGRES_USER
           value: eliza

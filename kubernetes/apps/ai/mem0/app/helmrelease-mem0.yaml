@@ -73,7 +73,7 @@ spec:
                   httpGet:
                     path: /docs
                     port: 8000
-                  initialDelaySeconds: 30
+                  initialDelaySeconds: 300
                   periodSeconds: 30
                   timeoutSeconds: 10
               readiness:
@@ -83,7 +83,7 @@ spec:
                   httpGet:
                     path: /docs
                     port: 8000
-                  initialDelaySeconds: 15
+                  initialDelaySeconds: 150
                   periodSeconds: 10
                   timeoutSeconds: 5
     service:

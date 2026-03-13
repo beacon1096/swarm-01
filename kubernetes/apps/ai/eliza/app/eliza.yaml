@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
       - name: eliza
-        image: elizaos/eliza:latest
-        imagePullPolicy: IfNotPresent
+        image: ghcr.io/elizaos/eliza:latest
+        imagePullPolicy: Always
         command: ["node", "--max-old-space-size=4096", "dist/index.js", "--character=characters/character.json"]
         env:
         - name: POSTGRES_URL
