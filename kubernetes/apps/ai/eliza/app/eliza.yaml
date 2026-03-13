@@ -21,6 +21,10 @@ spec:
         imagePullPolicy: Always
         command: ["bun", "run", "packages/cli/dist/index.js", "start", "--character=characters/character.json"]
         env:
+        - name: CLIENTS
+          value: "matrix,direct"
+        - name: MODEL_PROVIDER
+          value: "openai"
         - name: POSTGRES_URL
           value: "postgresql://eliza:eliza_password@postgres-eliza:5432/eliza"
         # Mem0 Config (No auth required by your custom FastAPI wrapper)
