@@ -33,7 +33,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: cluster-secrets
-              key: eliza.MATRIX_ACCESS_TOKEN
+              key: ELIZA_MATRIX_ACCESS_TOKEN
         # LLM Config (MacStudio oMLX)
         - name: OPENAI_API_URL
           value: "http://100.99.236.96:12306/v1"
@@ -41,7 +41,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: cluster-secrets
-              key: eliza.OPENAI_API_KEY
+              key: ELIZA_OPENAI_API_KEY
         - name: SMALL_OPENAI_MODEL
           value: "Qwen3.5-35B-A3B-4bit"
         - name: MEDIUM_OPENAI_MODEL
