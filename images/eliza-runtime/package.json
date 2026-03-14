@@ -1,0 +1,12 @@
+{
+  "name": "eliza-runtime-build",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@elizaos/cli": "1.7.2",
+    "@elizaos/plugin-bootstrap": "1.7.2",
+    "@elizaos/plugin-sql": "1.7.2",
+    "@elizaos/plugin-openai": "1.6.0",
+    "@elizaos/plugin-matrix": "2.0.0-alpha.3"
+  }
+}

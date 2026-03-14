@@ -1,0 +1,6 @@
+.git
+.github
+.forgejo
+node_modules
+bun.lockb
+README.md

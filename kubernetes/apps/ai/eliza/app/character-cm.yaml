@@ -7,7 +7,11 @@ data:
   character.json: |
     {
       "name": "Technician",
-      "plugins": [],
+      "plugins": [
+        "@elizaos/plugin-bootstrap",
+        "@elizaos/plugin-openai",
+        "@elizaos/plugin-matrix"
+      ],
       "settings": {
         "secrets": {}
       },

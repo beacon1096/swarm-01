@@ -23,12 +23,12 @@ spec:
         containers:
           app:
             image:
-              repository: docker.io/mem0/mem0-api-server
-              tag: latest
+              repository: zot.registry.svc.cluster.local:5000/custom/mem0-api-server
+              tag: 2026-03-13-1
             command: ["/bin/sh", "-c"]
             args:
               - |
-                pip install ollama "psycopg[binary,pool]" langchain-neo4j rank-bm25 --quiet && exec uvicorn main:app --host 0.0.0.0 --port 8000
+                exec uvicorn main:app --host 0.0.0.0 --port 8000
             env:
               POSTGRES_HOST: mem0-postgresql
               POSTGRES_PORT: "5432"

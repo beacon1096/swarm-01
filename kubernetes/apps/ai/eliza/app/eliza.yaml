@@ -17,41 +17,38 @@ spec:
     spec:
       containers:
       - name: eliza
-        image: zot.registry.svc.cluster.local:5000/elizaos/eliza:latest
+        image: zot.registry.svc.cluster.local:5000/custom/eliza-runtime:1.7.2-matrix-amd64-20260314b
         imagePullPolicy: Always
-        command: ["bun", "run", "packages/cli/dist/index.js", "start", "--character=characters/character.json"]
+        command: ["bun", "run", "/app/node_modules/@elizaos/cli/dist/index.js", "start", "--character=/app/characters/character.json"]
         env:
-        - name: CLIENTS
-          value: "matrix,direct"
-        - name: MODEL_PROVIDER
-          value: "openai"
         - name: POSTGRES_URL
           value: "postgresql://eliza:eliza_password@postgres-eliza:5432/eliza"
-        # Mem0 Config (No auth required by your custom FastAPI wrapper)
         - name: MEM0_API_URL
           value: "http://mem0:8000"
-        # Matrix Config
-        - name: MATRIX_SERVER_URL
-          value: "http://matrix-synapse.collaboration.svc.cluster.local:8008" # Internal service address
+        - name: MATRIX_HOMESERVER
+          value: "http://matrix-synapse.collaboration.svc.cluster.local:8008"
+        - name: MATRIX_USER_ID
+          value: "@agent-technician:beaco.works"
         - name: MATRIX_ACCESS_TOKEN
           valueFrom:
             secretKeyRef:
               name: cluster-secrets
               key: ELIZA_MATRIX_ACCESS_TOKEN
-        # LLM Config (MacStudio oMLX)
-        - name: OPENAI_API_URL
+        - name: OPENAI_BASE_URL
           value: "http://100.99.236.96:12306/v1"
         - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
               name: cluster-secrets
               key: ELIZA_OPENAI_API_KEY
-        - name: SMALL_OPENAI_MODEL
+        - name: OPENAI_SMALL_MODEL
           value: "Qwen3.5-35B-A3B-4bit"
-        - name: MEDIUM_OPENAI_MODEL
+        - name: OPENAI_LARGE_MODEL
           value: "Qwen3.5-35B-A3B-4bit"
-        - name: LARGE_OPENAI_MODEL
-          value: "Qwen3.5-35B-A3B-4bit"
+        - name: OPENAI_EMBEDDING_DIMENSIONS
+          value: "1536"
+        - name: NODE_ENV
+          value: "production"
         volumeMounts:
         - name: character-config
           mountPath: /app/characters/character.json
