@@ -1,0 +1,6 @@
+.git
+.github
+.forgejo
+README.md
+__pycache__
+*.pyc
