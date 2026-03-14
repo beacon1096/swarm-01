@@ -30,7 +30,7 @@ jobs:
       - name: Build and push image
         shell: bash
         env:
-          IMAGE_REF: ${{ vars.ZOT_REGISTRY }}/custom/eliza-runtime:forgejo-${{ github.sha }}
+          IMAGE_REF: ${{ vars.ZOT_REGISTRY }}/custom/eliza-runtime:sha-${{ github.sha }}
           PLATFORM: linux/amd64
           CONTAINER_ENGINE: docker
           PUSH: "true"

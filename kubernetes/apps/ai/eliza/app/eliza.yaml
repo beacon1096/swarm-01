@@ -25,6 +25,8 @@ spec:
           value: "postgresql://eliza:eliza_password@postgres-eliza:5432/eliza"
         - name: MEM0_API_URL
           value: "http://mem0:8000"
+        - name: MATRIX_SERVER_URL
+          value: "http://matrix-synapse.collaboration.svc.cluster.local:8008"
         - name: MATRIX_HOMESERVER
           value: "http://matrix-synapse.collaboration.svc.cluster.local:8008"
         - name: MATRIX_USER_ID

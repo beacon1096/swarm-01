@@ -51,7 +51,6 @@ spec:
       name: postgres-data
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: harvester
       resources:
         requests:
           storage: 5Gi

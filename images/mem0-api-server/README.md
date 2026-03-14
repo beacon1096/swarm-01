@@ -19,12 +19,19 @@ bash ./scripts/mem0-image-build.sh
 Override defaults with environment variables:
 
 ```bash
-IMAGE_REF=172.16.107.41:5000/custom/mem0-api-server:2026-03-13-1 \
+IMAGE_REF=172.16.107.41:5000/custom/mem0-api-server:dev \
 CONTAINER_ENGINE=podman \
 PLATFORM=linux/amd64 \
 PUSH=true \
 bash ./scripts/mem0-image-build.sh
 ```
+
+## Tag strategy
+
+- local ad-hoc builds use `:dev`
+- CI builds from `main` publish immutable tags in the form `:sha-<commit12>`
+- promoted cluster rollouts should use an explicit immutable release tag, for example `:2026-03-13-1`
+- Kubernetes manifests should reference only promoted immutable tags, never `:latest` or `:dev`
 
 ## CI shape
 

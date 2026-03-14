@@ -23,6 +23,13 @@ PUSH=true \
 bash ./scripts/eliza-image-build.sh
 ```
 
+## Tag strategy
+
+- local ad-hoc builds use `:dev`
+- CI builds from `main` publish immutable tags in the form `:sha-<commit12>`
+- promoted cluster rollouts should use an explicit immutable release tag, for example `:1.7.2-matrix-amd64-20260314b`
+- Kubernetes manifests should reference only promoted immutable tags, never `:latest` or `:dev`
+
 ## CI shape
 
 - `scripts/eliza-image-build.sh` is the shared entrypoint for local builds and CI runners

@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
 CONTEXT_DIR="${ROOT_DIR}/images/mem0-api-server"
 
-IMAGE_REF="${IMAGE_REF:-zot.registry.svc.cluster.local:5000/custom/mem0-api-server:2026-03-13-1}"
+IMAGE_REF="${IMAGE_REF:-zot.registry.svc.cluster.local:5000/custom/mem0-api-server:dev}"
 PLATFORM="${PLATFORM:-linux/amd64}"
 PUSH="${PUSH:-false}"
 CONTAINER_ENGINE="${CONTAINER_ENGINE:-}"
