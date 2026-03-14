@@ -9,6 +9,9 @@ RUN apt-get update \
 COPY package.json ./
 RUN bun install --production --ignore-scripts
 
+COPY patch-runtime.mjs ./
+RUN node /app/patch-runtime.mjs
+
 ENV NODE_ENV=production
 
 CMD ["bun", "run", "/app/node_modules/@elizaos/cli/dist/index.js", "start", "--character=/app/characters/character.json"]
