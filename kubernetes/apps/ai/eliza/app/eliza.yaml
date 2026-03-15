@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: eliza
-        image: zot.registry.svc.cluster.local:5000/custom/eliza-runtime:1.7.2-matrix-amd64-20260314e
+        image: zot.registry.svc.cluster.local:5000/custom/eliza-runtime:1.7.2-matrix-amd64-20260315e
         imagePullPolicy: Always
         command: ["bun", "run", "/app/node_modules/@elizaos/cli/dist/index.js", "start", "--character=/app/characters/character.json"]
         env:
@@ -36,8 +36,10 @@ spec:
             secretKeyRef:
               name: cluster-secrets
               key: ELIZA_MATRIX_ACCESS_TOKEN
+        - name: MATRIX_AUTO_JOIN
+          value: "true"
         - name: OPENAI_BASE_URL
-          value: "http://100.99.236.96:12306/v1"
+          value: "http://omlx-llm.ai.svc.cluster.local:12306/v1"
         - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
@@ -47,8 +49,12 @@ spec:
           value: "Qwen3.5-35B-A3B-4bit"
         - name: OPENAI_LARGE_MODEL
           value: "Qwen3.5-35B-A3B-4bit"
+        - name: OPENAI_EMBEDDING_URL
+          value: "http://mem0-ollama:11434/v1"
+        - name: OPENAI_EMBEDDING_MODEL
+          value: "nomic-embed-text"
         - name: OPENAI_EMBEDDING_DIMENSIONS
-          value: "1536"
+          value: "768"
         - name: NODE_ENV
           value: "production"
         volumeMounts:
