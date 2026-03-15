@@ -28,7 +28,7 @@ spec:
         - name: MEM0_AUTO_SAVE
           value: "true"
         - name: MEM0_SCOPE_MODE
-          value: "agent"
+          value: "user"
         - name: MATRIX_SERVER_URL
           value: "http://matrix-synapse.collaboration.svc.cluster.local:8008"
         - name: MATRIX_HOMESERVER
