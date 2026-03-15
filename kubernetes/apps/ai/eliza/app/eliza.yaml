@@ -17,14 +17,18 @@ spec:
     spec:
       containers:
       - name: eliza
-        image: zot.registry.svc.cluster.local:5000/custom/eliza-runtime:1.7.2-matrix-amd64-20260315h
+        image: zot.registry.svc.cluster.local:5000/custom/eliza-runtime:1.7.2-matrix-mem0-amd64-20260316a
         imagePullPolicy: Always
         command: ["bun", "run", "/app/node_modules/@elizaos/cli/dist/index.js", "start", "--character=/app/characters/character.json"]
         env:
         - name: POSTGRES_URL
           value: "postgresql://eliza:eliza_password@postgres-eliza:5432/eliza"
-        - name: MEM0_API_URL
+        - name: MEM0_API_BASE
           value: "http://mem0:8000"
+        - name: MEM0_AUTO_SAVE
+          value: "true"
+        - name: MEM0_SCOPE_MODE
+          value: "agent"
         - name: MATRIX_SERVER_URL
           value: "http://matrix-synapse.collaboration.svc.cluster.local:8008"
         - name: MATRIX_HOMESERVER

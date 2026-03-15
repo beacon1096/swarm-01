@@ -7,6 +7,7 @@
     "@elizaos/plugin-bootstrap": "1.7.2",
     "@elizaos/plugin-sql": "1.7.2",
     "@elizaos/plugin-openai": "1.6.0",
-    "@elizaos/plugin-matrix": "2.0.0-alpha.8"
+    "@elizaos/plugin-matrix": "2.0.0-alpha.8",
+    "@elizaos/plugin-mem0": "github:beacon1096/elizaos-plugin-mem0"
   }
 }

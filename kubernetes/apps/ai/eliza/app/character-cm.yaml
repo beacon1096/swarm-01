@@ -10,7 +10,8 @@ data:
       “plugins”: [
         “@elizaos/plugin-bootstrap”,
         “@elizaos/plugin-openai”,
-        “@elizaos/plugin-matrix”
+        “@elizaos/plugin-matrix”,
+        “@elizaos/plugin-mem0”
       ],
       “settings”: {
         “secrets”: {},
