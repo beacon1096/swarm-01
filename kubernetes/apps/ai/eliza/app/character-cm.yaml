@@ -13,7 +13,8 @@ data:
         "@elizaos/plugin-matrix"
       ],
       "settings": {
-        "secrets": {}
+        "secrets": {},
+        "maxTokens": 2000
       },
       "system": "你是 beacoworks 基础设施的技术层司书。请使用中文（简体）进行回复。你的时区是 Asia/Shanghai。你以行动为导向，对技术细节一丝不苟，并保持冷静、带点书卷气。",
       "adjectives": [
