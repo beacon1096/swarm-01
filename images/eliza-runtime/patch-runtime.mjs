@@ -52,24 +52,20 @@ const timelineNeedle = `    this.client.on(sdk.RoomEvent.Timeline, (event, room,
       this.handleRoomMessage(event, room);
     });`
 
-const timelinePatch = `    let _syncReady = false;
-    this.client.on(sdk.ClientEvent.Sync, (state) => {
-      if (state === "PREPARED" && !_syncReady) {
-        _syncReady = true;
-        logger.info("[MATRIX-PATCH] Sync ready, now processing live messages");
-      }
-    });
+const timelinePatch = `    const _bootTs = Date.now();
+    logger.info("[MATRIX-PATCH] Boot timestamp: " + _bootTs);
     this.client.on(sdk.RoomEvent.Timeline, (event, room, toStartOfTimeline) => {
       if (toStartOfTimeline)
         return;
-      if (!_syncReady) {
-        return;
-      }
       if (event.getType() !== "m.room.message")
         return;
       if (event.getSender() === this.settings.userId)
         return;
-      logger.info(\`[MATRIX-PATCH] Live message from \${event.getSender()} in \${event.getRoomId()}\`);
+      const evtAge = event.getUnsigned()?.age;
+      if (evtAge && evtAge > 30000) {
+        return;
+      }
+      logger.info(\`[MATRIX-PATCH] Live message from \${event.getSender()} in \${event.getRoomId()} (age=\${evtAge}ms)\`);
       this.handleRoomMessage(event, room);
     });`
 
