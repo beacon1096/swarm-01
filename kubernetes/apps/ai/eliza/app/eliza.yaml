@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: eliza
-        image: zot.registry.svc.cluster.local:5000/custom/eliza-runtime:1.7.2-matrix-amd64-20260315f
+        image: zot.registry.svc.cluster.local:5000/custom/eliza-runtime:1.7.2-matrix-amd64-20260315g
         imagePullPolicy: Always
         command: ["bun", "run", "/app/node_modules/@elizaos/cli/dist/index.js", "start", "--character=/app/characters/character.json"]
         env:
