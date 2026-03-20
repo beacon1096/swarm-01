@@ -10,6 +10,14 @@ At its core, this project leverages [makejinja](https://github.com/mirkolenz/mak
 
 With this approach, you'll gain a solid foundation to build and manage your Kubernetes cluster efficiently.
 
+## 📂 Repository Structure
+
+- **`bootstrap/`**: Handles the initial cluster setup via Helmfile.
+- **`images/`**: Manages the container images built for applications running in the cluster (e.g., eliza-runtime, mem0-api-server).
+- **`kubernetes/`**: Contains the manifest files for FluxCD to manage the applications in the Kubernetes cluster.
+- **`scripts/`**: Contains the shell scripts used for bootstrapping and image building.
+- **`talos/`**: Manages the Talos OS node configurations.
+
 ## ✨ Features
 
 A Kubernetes cluster deployed with [Talos Linux](https://github.com/siderolabs/talos) and an opinionated implementation of [Flux](https://github.com/fluxcd/flux2) using [GitHub](https://github.com/) as the Git provider, [sops](https://github.com/getsops/sops) to manage secrets and [cloudflared](https://github.com/cloudflare/cloudflared) to access applications external to your local network.
@@ -377,24 +385,6 @@ Below is a general guide on trying to debug an issue with an resource or applica
     ```
 
 Resolving problems that you have could take some tweaking of your YAML manifests in order to get things working, other times it could be a external factor like permissions on a NFS server. If you are unable to figure out your problem see the support sections below.
-
-## 🧹 Tidy up
-
-Once your cluster is fully configured and you no longer need to run `task configure`, it's a good idea to clean up the repository by removing the [templates](./templates) directory and any files related to the templating process. This will help eliminate unnecessary clutter from the upstream template repository and resolve any "duplicate registry" warnings from Renovate.
-
-1. Tidy up your repository:
-
-    ```sh
-    task template:tidy
-    ```
-
-2. Push your changes to git:
-
-    ```sh
-    git add -A
-    git commit -m "chore: tidy up :broom:"
-    git push
-    ```
 
 ## ❔ What's next
 
