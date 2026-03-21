@@ -25,6 +25,13 @@ spec:
             labels:
               - "ubuntu-latest:docker://node:20.12-bookworm"
               - "nix-builder:docker://nixos/nix:latest"
+          container:
+            network: host
+            envs:
+              HTTP_PROXY: "http://sing-box.network.svc:7890"
+              HTTPS_PROXY: "http://sing-box.network.svc:7890"
+              NO_PROXY: "*.beaco.works,*.svc,*.svc.cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,127.0.0.1"
+              GOPROXY: "https://goproxy.cn,https://proxy.golang.org,direct"
     kubectl:
       image:
         registry: registry.beaco.works
@@ -43,3 +50,25 @@ spec:
           memory: 2Gi
     securityContext:
       privileged: true
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: forgejo-runner
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/1/env/-
+                value:
+                  name: HTTP_PROXY
+                  value: "http://sing-box.network.svc:7890"
+              - op: add
+                path: /spec/template/spec/containers/1/env/-
+                value:
+                  name: HTTPS_PROXY
+                  value: "http://sing-box.network.svc:7890"
+              - op: add
+                path: /spec/template/spec/containers/1/env/-
+                value:
+                  name: NO_PROXY
+                  value: "*.beaco.works,*.svc,*.svc.cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,127.0.0.1"
