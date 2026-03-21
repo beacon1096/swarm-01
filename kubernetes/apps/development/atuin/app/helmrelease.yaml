@@ -22,8 +22,8 @@ spec:
           app:
             image:
               repository: ghcr.io/atuinsh/atuin
-              tag: v18.12.1
-            args: ["server", "start"]
+              tag: v18.13.3
+            args: ["start"]
             env:
               ATUIN_HOST: "0.0.0.0"
               ATUIN_PORT: "8888"

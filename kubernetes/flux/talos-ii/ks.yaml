@@ -97,10 +97,36 @@ spec:
               group: helm.toolkit.fluxcd.io
               kind: HelmRelease
               name: envoy-gateway
+    # --- Talos II: Bitnami PostgreSQL image override (digest-pinned images can't be pulled through Zot mirror) ---
+    - target:
+        kind: Kustomization
+        name: ".*-postgresql"
+      patch: |
+        - op: add
+          path: /spec/patches/-
+          value:
+            patch: |-
+              apiVersion: helm.toolkit.fluxcd.io/v2
+              kind: HelmRelease
+              metadata:
+                name: _
+              spec:
+                values:
+                  global:
+                    security:
+                      allowInsecureImages: true
+                  image:
+                    registry: registry.beaco.works
+                    repository: docker.io/bitnami/postgresql
+                    tag: pg16
+                    digest: ""
+            target:
+              group: helm.toolkit.fluxcd.io
+              kind: HelmRelease
     # --- Talos II: suspend apps not needed on this cluster ---
     - target:
         kind: Kustomization
-        name: "(ai|attic|atuin|authentik|cilium|coder|coredns|echo|eliza|forgejo|forgejo-operator|forgejo-runner|harvester-csi-driver|matrix|mattermost|mem0|sing-box|spegel|uptime-kuma|vaultwarden|victoria-logs|victoria-logs-collector|victoria-metrics|zot)"
+        name: "(ai|authentik|echo|eliza|forgejo|forgejo-operator|forgejo-runner|matrix|mattermost|mem0|uptime-kuma|vaultwarden|victoria-logs|victoria-logs-collector|victoria-metrics|zot)"
       patch: |
         - op: add
           path: /spec/suspend
