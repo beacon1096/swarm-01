@@ -144,9 +144,9 @@ spec:
                       - name: manager
                         env:
                           - name: HTTP_PROXY
-                            value: "http://sing-box.network.svc:7890"
+                            value: "http://sing-box.network.svc.cluster.local:7890"
                           - name: HTTPS_PROXY
-                            value: "http://sing-box.network.svc:7890"
+                            value: "http://sing-box.network.svc.cluster.local:7890"
                           - name: NO_PROXY
                             value: "source-controller.flux-system.svc.cluster.local.,notification-controller.flux-system.svc.cluster.local.,.beaco.works,.svc,.svc.cluster.local,cluster.local.,cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,127.0.0.1"
             target:

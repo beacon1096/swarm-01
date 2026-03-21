@@ -87,9 +87,9 @@ spec:
         }
     env:
       - name: HTTP_PROXY
-        value: "http://sing-box.network.svc:7890"
+        value: "http://sing-box.network.svc.cluster.local:7890"
       - name: HTTPS_PROXY
-        value: "http://sing-box.network.svc:7890"
+        value: "http://sing-box.network.svc.cluster.local:7890"
       - name: NO_PROXY
         value: "ghcr.io,quay.io,docker.elastic.co,*.beaco.works,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,127.0.0.1"
     resources:
