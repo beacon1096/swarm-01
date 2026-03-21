@@ -13,7 +13,7 @@ spec:
       envoyDeployment:
         replicas: 2
         container:
-          imageRepository: mirror.gcr.io/envoyproxy/envoy
+          imageRepository: ${ENVOY_IMAGE_REPO:=mirror.gcr.io/envoyproxy/envoy}
           resources:
             requests:
               cpu: 100m
@@ -52,7 +52,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: external.${SECRET_DOMAIN}
-      lbipam.cilium.io/ips: "172.16.107.31"
+      lbipam.cilium.io/ips: "${ENVOY_EXTERNAL_IP:=172.16.107.31}"
   listeners:
     - name: http
       protocol: HTTP
@@ -82,7 +82,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: internal.${SECRET_DOMAIN}
-      lbipam.cilium.io/ips: "172.16.107.21"
+      lbipam.cilium.io/ips: "${ENVOY_INTERNAL_IP:=172.16.107.21}"
   listeners:
     - name: http
       protocol: HTTP
@@ -134,7 +134,7 @@ spec:
   clientIPDetection:
     xForwardedFor:
       trustedCIDRs:
-        - "10.42.0.0/16"
+        - "${POD_CIDR:=10.42.0.0/16}"
   http2:
     onInvalidMessage: TerminateStream
   http3: {}

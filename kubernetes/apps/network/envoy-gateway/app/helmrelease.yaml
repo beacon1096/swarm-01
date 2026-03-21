@@ -10,7 +10,7 @@ spec:
   interval: 1h
   values:
     global:
-      imageRegistry: mirror.gcr.io
+      imageRegistry: ${ENVOY_GATEWAY_REGISTRY:=mirror.gcr.io}
     config:
       envoyGateway:
         provider:
