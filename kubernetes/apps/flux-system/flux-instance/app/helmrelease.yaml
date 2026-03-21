@@ -131,3 +131,24 @@ spec:
             target:
               kind: Deployment
               name: kustomize-controller
+          - # Proxy for GFW-blocked upstream (GitHub, docker.io, registry.k8s.io)
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: all
+              spec:
+                template:
+                  spec:
+                    containers:
+                      - name: manager
+                        env:
+                          - name: HTTP_PROXY
+                            value: "http://sing-box.network.svc:7890"
+                          - name: HTTPS_PROXY
+                            value: "http://sing-box.network.svc:7890"
+                          - name: NO_PROXY
+                            value: ".beaco.works,.svc,.svc.cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,127.0.0.1"
+            target:
+              kind: Deployment
+              name: (source-controller|helm-controller)
