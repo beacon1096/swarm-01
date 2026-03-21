@@ -7,6 +7,10 @@ spec:
   chartRef:
     kind: OCIRepository
     name: envoy-gateway
+  install:
+    crds: Skip
+  upgrade:
+    crds: Skip
   interval: 1h
   values:
     global:
