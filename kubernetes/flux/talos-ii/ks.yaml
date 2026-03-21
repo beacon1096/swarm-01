@@ -69,6 +69,9 @@ spec:
               ENVOY_INTERNAL_IP: "10.20.0.201"
               K8S_GATEWAY_IP: "10.20.0.202"
               FLUX_SYNC_PATH: "kubernetes/flux/talos-ii"
+              ENVOY_GATEWAY_OCI_REGISTRY: "registry.beaco.works/envoyproxy"
+              ENVOY_GATEWAY_REGISTRY: "registry.beaco.works/docker.io"
+              ENVOY_IMAGE_REPO: "registry.beaco.works/docker.io/envoyproxy/envoy"
       target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
