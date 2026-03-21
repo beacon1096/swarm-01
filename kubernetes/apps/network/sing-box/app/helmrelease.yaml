@@ -1,0 +1,48 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sing-box
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  interval: 1h
+  values:
+    controllers:
+      sing-box:
+        containers:
+          app:
+            image:
+              repository: registry.beaco.works/infrastructure/nix-fleet/sing-box
+              tag: latest
+            command: ["/nix/store/42fb76aqpaq859l094w5phm06x3ydwqk-sing-box-1.13.2/bin/sing-box"]
+            args: ["run", "-c", "/etc/sing-box/config.json"]
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+            securityContext:
+              capabilities:
+                add: [NET_ADMIN]
+    service:
+      sing-box:
+        controller: sing-box
+        type: ClusterIP
+        ports:
+          mixed-proxy:
+            port: 7890
+            protocol: TCP
+    persistence:
+      config:
+        type: secret
+        name: sing-box-config
+        globalMounts:
+          - path: /etc/sing-box
+            readOnly: true
