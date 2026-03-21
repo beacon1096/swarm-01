@@ -23,6 +23,8 @@ spec:
               tag: latest
             command: ["/nix/store/42fb76aqpaq859l094w5phm06x3ydwqk-sing-box-1.13.2/bin/sing-box"]
             args: ["run", "-c", "/etc/sing-box/config.json"]
+            env:
+              SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
             probes:
               liveness:
                 enabled: false
@@ -45,4 +47,10 @@ spec:
         name: sing-box-config
         globalMounts:
           - path: /etc/sing-box
+            readOnly: true
+      ca-certs:
+        type: hostPath
+        hostPath: /etc/ssl/certs
+        globalMounts:
+          - path: /etc/ssl/certs
             readOnly: true
