@@ -100,7 +100,6 @@ spec:
     # --- Talos II: Bitnami PostgreSQL image override (digest-pinned images can't be pulled through Zot mirror) ---
     - target:
         kind: Kustomization
-        name: ".*-postgresql"
       patch: |
         - op: add
           path: /spec/patches/-
@@ -123,6 +122,7 @@ spec:
             target:
               group: helm.toolkit.fluxcd.io
               kind: HelmRelease
+              name: ".*-postgresql"
     # --- Talos II: suspend apps not needed on this cluster ---
     - target:
         kind: Kustomization
