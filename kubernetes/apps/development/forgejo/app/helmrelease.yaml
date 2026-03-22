@@ -51,10 +51,11 @@ spec:
         mirror:
           ENABLED: true
           DEFAULT_INTERVAL: 8h
-      oauth:
-        - name: "authentik"
-          provider: "openidConnect"
-          existingSecret: forgejo-authentik-secret
-          autoDiscoverUrl: "https://id.${SECRET_DOMAIN}/application/o/forgejo/.well-known/openid-configuration"
-          scopes: "openid email profile"
-          iconUrl: "https://id.${SECRET_DOMAIN}/static/dist/assets/icons/icon.png"
+      # oauth temporarily disabled - NEC8 migrated DB already has OIDC configured
+      # oauth:
+      #   - name: "authentik"
+      #     provider: "openidConnect"
+      #     existingSecret: forgejo-authentik-secret
+      #     autoDiscoverUrl: "https://id.${SECRET_DOMAIN}/application/o/forgejo/.well-known/openid-configuration"
+      #     scopes: "openid email profile"
+      #     iconUrl: "https://id.${SECRET_DOMAIN}/static/dist/assets/icons/icon.png"
