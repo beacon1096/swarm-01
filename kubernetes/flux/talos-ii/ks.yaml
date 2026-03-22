@@ -126,7 +126,7 @@ spec:
     # --- Talos II: suspend apps not needed on this cluster ---
     - target:
         kind: Kustomization
-        name: "(ai|authentik|echo|eliza|forgejo|forgejo-operator|forgejo-runner|matrix|mattermost|mem0|uptime-kuma|vaultwarden|victoria-logs|victoria-logs-collector|victoria-metrics|zot)"
+        name: "(ai|authentik|coredns|echo|eliza|forgejo|forgejo-operator|forgejo-runner|matrix|mattermost|mem0|uptime-kuma|vaultwarden|victoria-logs|victoria-logs-collector|victoria-metrics|zot)"
       patch: |
         - op: add
           path: /spec/suspend
