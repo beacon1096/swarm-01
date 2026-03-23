@@ -1,0 +1,78 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: immich-pgvecto
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: immich
+  interval: 1h
+  timeout: 15m
+  install:
+    disableWait: true
+  upgrade:
+    disableWait: true
+  values:
+    defaultPodOptions:
+      terminationGracePeriodSeconds: 30
+    controllers:
+      postgresql:
+        replicas: 1
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: docker.io/tensorchord/pgvecto-rs
+              tag: pg16-v0.4.0
+            env:
+              PGDATA: /var/lib/postgresql/data/pgdata
+              POSTGRES_USER: immich
+              POSTGRES_DB: immich
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-secret
+                    key: pg-password
+              POSTGRES_INITDB_ARGS: "--data-checksums"
+            ports:
+              - containerPort: 5432
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["pg_isready", "-U", "immich", "-d", "immich"]
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["pg_isready", "-U", "immich", "-d", "immich"]
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+    service:
+      app:
+        controller: postgresql
+        ports:
+          postgres:
+            port: 5432
+    persistence:
+      data:
+        enabled: true
+        storageClass: harvester
+        accessMode: ReadWriteOnce
+        size: 10Gi
+        globalMounts:
+          - path: /var/lib/postgresql/data

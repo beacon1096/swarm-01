@@ -55,3 +55,32 @@ spec:
       target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
+    - # Talos I: suspend apps that only run on Talos II
+      target:
+        kind: Kustomization
+        name: "(zot|home-assistant|immich|navidrome)"
+      patch: |
+        - op: add
+          path: /spec/suspend
+          value: true
+    - # Talos I: remove Spegel additional mirror (Zot migrated to Talos II)
+      target:
+        kind: Kustomization
+        name: spegel
+      patch: |
+        - op: add
+          path: /spec/patches/-
+          value:
+            patch: |-
+              apiVersion: helm.toolkit.fluxcd.io/v2
+              kind: HelmRelease
+              metadata:
+                name: spegel
+              spec:
+                values:
+                  spegel:
+                    additionalMirrorTargets: []
+            target:
+              group: helm.toolkit.fluxcd.io
+              kind: HelmRelease
+              name: spegel

@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich-tailscale
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "immich"
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/controller: server
+    app.kubernetes.io/instance: immich
+    app.kubernetes.io/name: immich
+  ports:
+    - name: http
+      port: 2283
+      targetPort: 2283
+      protocol: TCP

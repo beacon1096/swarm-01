@@ -1,0 +1,116 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: immich
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: immich
+  interval: 1h
+  dependsOn:
+    - name: immich-pgvecto
+    - name: immich-redis
+  values:
+    controllers:
+      server:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/immich-server
+              tag: v1.131.3
+            env:
+              DB_HOSTNAME: immich-pgvecto
+              DB_PORT: "5432"
+              DB_DATABASE_NAME: immich
+              DB_USERNAME: immich
+              DB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-secret
+                    key: pg-password
+              REDIS_HOSTNAME: immich-redis
+              REDIS_PORT: "6379"
+              IMMICH_MACHINE_LEARNING_URL: "http://localhost:3003"
+              TZ: "Asia/Shanghai"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server/ping
+                    port: 2283
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server/ping
+                    port: 2283
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+          machine-learning:
+            image:
+              repository: ghcr.io/immich-app/immich-machine-learning
+              tag: v1.131.3
+            env:
+              IMMICH_PORT: "3003"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 4Gi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: 3003
+                  initialDelaySeconds: 120
+                  periodSeconds: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: 3003
+                  initialDelaySeconds: 60
+                  periodSeconds: 10
+
+    service:
+      app:
+        controller: server
+        ports:
+          http:
+            port: 2283
+
+    persistence:
+      library:
+        enabled: true
+        storageClass: harvester
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        globalMounts:
+          - path: /usr/src/app/upload
+      ml-cache:
+        enabled: true
+        storageClass: harvester
+        accessMode: ReadWriteOnce
+        size: 10Gi
+        advancedMounts:
+          server:
+            machine-learning:
+              - path: /cache

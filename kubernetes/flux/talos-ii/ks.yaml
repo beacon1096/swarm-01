@@ -72,6 +72,7 @@ spec:
               ENVOY_GATEWAY_OCI_REGISTRY: "registry.beaco.works"
               ENVOY_GATEWAY_REGISTRY: "registry.beaco.works/docker.io"
               ENVOY_IMAGE_REPO: "registry.beaco.works/docker.io/envoyproxy/envoy"
+              ZOT_LB_IP: "10.20.0.203"
       target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
@@ -131,10 +132,32 @@ spec:
         - op: replace
           path: /spec/path
           value: ./kubernetes/apps/kube-system/harvester-csi-driver/talos-ii
+    # --- Talos II: Spegel mirror targets local Zot LB ---
+    - target:
+        kind: Kustomization
+        name: spegel
+      patch: |
+        - op: add
+          path: /spec/patches/-
+          value:
+            patch: |-
+              apiVersion: helm.toolkit.fluxcd.io/v2
+              kind: HelmRelease
+              metadata:
+                name: spegel
+              spec:
+                values:
+                  spegel:
+                    additionalMirrorTargets:
+                      - http://10.20.0.203:5000
+            target:
+              group: helm.toolkit.fluxcd.io
+              kind: HelmRelease
+              name: spegel
     # --- Talos II: suspend apps not needed on this cluster ---
     - target:
         kind: Kustomization
-        name: "(ai|coredns|echo|eliza|forgejo-runner|matrix|mattermost|mem0|uptime-kuma|victoria-logs|victoria-logs-collector|victoria-metrics|zot)"
+        name: "(ai|coredns|echo|eliza|forgejo-runner|matrix|mattermost|mem0|uptime-kuma|victoria-logs|victoria-logs-collector|victoria-metrics)"
       patch: |
         - op: add
           path: /spec/suspend

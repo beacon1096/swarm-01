@@ -1,0 +1,64 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: home-assistant
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: home-assistant
+  interval: 1h
+  values:
+    defaultPodOptions:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+    controllers:
+      home-assistant:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-assistant/home-assistant
+              tag: "2025.3.4"
+            env:
+              TZ: "Asia/Shanghai"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8123
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8123
+                  initialDelaySeconds: 15
+                  periodSeconds: 10
+
+    service:
+      app:
+        controller: home-assistant
+        ports:
+          http:
+            port: 8123
+
+    persistence:
+      config:
+        enabled: true
+        storageClass: harvester
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        globalMounts:
+          - path: /config
