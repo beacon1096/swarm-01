@@ -1,6 +1,6 @@
 ---
 creation_rules:
-  - path_regex: talos(-ii)?/.*\.sops\.ya?ml
+  - path_regex: ^talos(-ii)?/.*\.sops\.ya?ml
     mac_only_encrypted: true
     age: "age16axld0tr7u7rhkm0dfcj0elmw8lzqxsm8rykrdafrrk5dxt3g5equwm578"
   - path_regex: (bootstrap|kubernetes)/.*\.sops\.ya?ml
