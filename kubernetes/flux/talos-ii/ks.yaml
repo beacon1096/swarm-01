@@ -123,6 +123,14 @@ spec:
               group: helm.toolkit.fluxcd.io
               kind: HelmRelease
               name: ".*-postgresql"
+    # --- Talos II: use ms01 Harvester CSI config instead of NEC8 ---
+    - target:
+        kind: Kustomization
+        name: harvester-csi-driver
+      patch: |
+        - op: replace
+          path: /spec/path
+          value: ./kubernetes/apps/kube-system/harvester-csi-driver/talos-ii
     # --- Talos II: suspend apps not needed on this cluster ---
     - target:
         kind: Kustomization
