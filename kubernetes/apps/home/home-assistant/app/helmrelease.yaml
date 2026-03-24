@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-assistant/home-assistant
-              tag: "2025.3.4"
+              tag: "2026.3.4"
             env:
               TZ: "Asia/Shanghai"
             resources:
