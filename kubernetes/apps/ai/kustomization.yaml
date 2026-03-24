@@ -10,3 +10,4 @@ resources:
   - ./namespace.yaml
   - ./mem0/ks.yaml
   - ./eliza/ks.yaml
+  - ./zeroclaw/ks.yaml

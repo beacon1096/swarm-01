@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zeroclaw
+  labels:
+    app: zeroclaw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zeroclaw
+  template:
+    metadata:
+      labels:
+        app: zeroclaw
+    spec:
+      containers:
+      - name: zeroclaw
+        image: ghcr.io/zeroclaw-labs/zeroclaw:v0.6.1
+        command: ["zeroclaw", "channel", "start", "--matrix"]
+        volumeMounts:
+        - name: config
+          mountPath: /root/.zeroclaw/config.toml
+          subPath: config.toml
+        - name: config
+          mountPath: /root/.zeroclaw/skills/technician/SKILL.md
+          subPath: system-prompt.md
+        - name: state
+          mountPath: /root/.zeroclaw/state
+        resources:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            memory: 256Mi
+      volumes:
+      - name: config
+        configMap:
+          name: zeroclaw-config
+      - name: state
+        persistentVolumeClaim:
+          claimName: zeroclaw-state
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zeroclaw-state
+  labels:
+    app: zeroclaw
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: harvester
+  resources:
+    requests:
+      storage: 1Gi
