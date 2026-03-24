@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.131.3
+              tag: v2.6.1
             env:
               DB_HOSTNAME: immich-pgvecto
               DB_PORT: "5432"
@@ -61,7 +61,7 @@ spec:
           machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v1.131.3
+              tag: v2.6.1
             env:
               IMMICH_PORT: "3003"
             resources:
