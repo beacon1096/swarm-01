@@ -21,13 +21,13 @@ spec:
         command: ["zeroclaw", "channel", "start"]
         volumeMounts:
         - name: config
-          mountPath: /root/.zeroclaw/config.toml
+          mountPath: /zeroclaw-data/.zeroclaw/config.toml
           subPath: config.toml
         - name: config
-          mountPath: /root/.zeroclaw/skills/technician/SKILL.md
+          mountPath: /zeroclaw-data/.zeroclaw/skills/technician/SKILL.md
           subPath: system-prompt.md
         - name: state
-          mountPath: /root/.zeroclaw/state
+          mountPath: /zeroclaw-data/.zeroclaw/state
         resources:
           requests:
             cpu: 50m
