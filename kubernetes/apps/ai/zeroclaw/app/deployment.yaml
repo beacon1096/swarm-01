@@ -18,7 +18,7 @@ spec:
       containers:
       - name: zeroclaw
         image: ghcr.io/zeroclaw-labs/zeroclaw:v0.6.1
-        command: ["zeroclaw", "channel", "start", "--matrix"]
+        command: ["zeroclaw", "channel", "start"]
         volumeMounts:
         - name: config
           mountPath: /root/.zeroclaw/config.toml
