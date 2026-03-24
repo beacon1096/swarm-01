@@ -30,6 +30,9 @@ spec:
     config:
       reportStats: false
       enableRegistration: false
+      registrationSharedSecret:
+        existingSecret: matrix-synapse-secret
+        secretKey: registrationSharedSecret
 
     extraConfig:
       # -- Private server, disable federation

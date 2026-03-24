@@ -57,27 +57,29 @@ zeroclaw 和 eliza 需要通过 Kubernetes 内部服务地址连接 matrix 和 m
 
 ## 当前迁移状态
 
-### 已迁移到 talos-ii
-- [ ] mem0 (neo4j, postgresql, ollama)
-- [ ] matrix-synapse
-- [ ] authentik
-- [ ] vaultwarden
-- [ ] coder
-- [ ] atuin
-- [ ] attic
-- [ ] zot
-- [ ] home-assistant
-- [ ] immich
-- [ ] navidrome
+### 已迁移到 talos-ii ✅
+- [x] mem0 (neo4j, postgresql, ollama)
+- [x] matrix-synapse (新数据库，未迁移旧数据)
+- [x] authentik
+- [x] vaultwarden
+- [x] coder
+- [x] atuin
+- [x] attic
+- [x] zot
+- [x] home-assistant
+- [x] immich
+- [x] navidrome
+- [x] zeroclaw (已连接 matrix)
 
-### 需保留在 talos-i
+### 需保留在 talos-i ✅
 - [x] victoria-metrics
 - [x] victoria-logs
 - [x] uptime-kuma
-- [ ] forgejo (CI/CD)
-- [ ] forgejo-runner
+- [x] forgejo (CI/CD)
+- [x] forgejo-runner
 
 ### 待处理
-- [ ] 停止 talos-i 上已迁移的服务
-- [ ] 清理 talos-i 上重复的 HelmRelease
+- [ ] OIDC 配置修复 (matrix → authentik 网络问题)
+- [ ] eliza 服务更新配置
 - [ ] 修复 talos-ii-03 NotReady 节点
+- [ ] matrix 旧数据迁移 (可选)

@@ -17,7 +17,7 @@ data:
 
     [channels_config.matrix]
     homeserver = "http://matrix-synapse.collaboration.svc.cluster.local:8008"
-    access_token = "${ZEROCLAW_MATRIX_ACCESS_TOKEN}"
+    access_token = "syt_YWdlbnQtdGVjaG5pY2lhbg_UsxDfANkbjtUVNRZnPIo_2PQQ6s"
     user_id = "@agent-technician:beaco.works"
     room_id = "#bot:beaco.works"
     allowed_users = ["*"]
