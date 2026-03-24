@@ -38,20 +38,23 @@ spec:
       allow_public_rooms_without_auth: false
 
     # -- OIDC credentials stored in a Secret (not ConfigMap) via extraSecrets
+    # Temporarily disabled for cluster migration - needs authentik accessible via internal network
+    # extraSecrets:
+    #   oidc_providers:
+    #     - idp_id: authentik
+    #       idp_name: "Authentik"
+    #       discover: true
+    #       issuer: "https://id.${SECRET_DOMAIN}/application/o/matrix/"
+    #       client_id: "ECe7Lng2YKh13UTZYPdjMyrBy3IxXuSfZUj5YFDp"
+    #       client_secret: "lYCTeZPsvhfNH760JZLAbGP9viLwctAolDEo1RiZ3c2SpaxJh3SEQ1Vu4kcnzCC8trmtjW7Az9FPTeX06SahpKTB93oX0pOqKT4tc7zG3hvyPwWvIBIbCMHM5MWRzFXX"
+    #       scopes: ["openid", "profile", "email"]
+    #       user_mapping_provider:
+    #         config:
+    #           localpart_template: "{{ user.preferred_username }}"
+    #           display_name_template: "{{ user.name }}"
+    #       backchannel_logout_enabled: true
     extraSecrets:
-      oidc_providers:
-        - idp_id: authentik
-          idp_name: "Authentik"
-          discover: true
-          issuer: "https://id.${SECRET_DOMAIN}/application/o/matrix/"
-          client_id: "ECe7Lng2YKh13UTZYPdjMyrBy3IxXuSfZUj5YFDp"
-          client_secret: "lYCTeZPsvhfNH760JZLAbGP9viLwctAolDEo1RiZ3c2SpaxJh3SEQ1Vu4kcnzCC8trmtjW7Az9FPTeX06SahpKTB93oX0pOqKT4tc7zG3hvyPwWvIBIbCMHM5MWRzFXX"
-          scopes: ["openid", "profile", "email"]
-          user_mapping_provider:
-            config:
-              localpart_template: "{{ user.preferred_username }}"
-              display_name_template: "{{ user.name }}"
-          backchannel_logout_enabled: true
+      oidc_providers: []
 
     synapse:
       resources:
@@ -60,6 +63,13 @@ spec:
           memory: 512Mi
         limits:
           memory: 1500Mi
+      extraEnv:
+        - name: HTTP_PROXY
+          value: "http://sing-box.network.svc.cluster.local:7890"
+        - name: HTTPS_PROXY
+          value: "http://sing-box.network.svc.cluster.local:7890"
+        - name: NO_PROXY
+          value: ".svc,.svc.cluster.local,cluster.local.,cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,127.0.0.1"
 
     # -- Signing key persistence (required - Synapse generates on first run)
     signingkey:
