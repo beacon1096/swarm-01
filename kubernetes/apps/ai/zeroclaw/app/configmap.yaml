@@ -19,7 +19,7 @@ data:
     homeserver = "http://matrix-synapse.collaboration.svc.cluster.local:8008"
     access_token = "${ZEROCLAW_MATRIX_ACCESS_TOKEN}"
     user_id = "@agent-technician:beaco.works"
-    room_id = ""
+    room_id = "#bot:beaco.works"
     allowed_users = ["*"]
 
   system-prompt.md: |
