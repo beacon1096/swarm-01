@@ -21,11 +21,13 @@ spec:
         lbipam.cilium.io/ips: "${ZOT_LB_IP}"
     ingress:
       enabled: false
-    persistence:
-      enabled: true
-      storageClass: harvester
-      size: 50Gi
-      accessMode: ReadWriteOnce
+    persistence: true
+    pvc:
+      create: true
+      storage: 50Gi
+      storageClassName: harvester
+      accessModes:
+        - ReadWriteOnce
     mountConfig: true
     mountSecret: true
     configFiles:
