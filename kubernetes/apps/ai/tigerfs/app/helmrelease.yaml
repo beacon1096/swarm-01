@@ -1,0 +1,79 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tigerfs-postgresql
+  namespace: ai
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: tigerfs
+    namespace: ai
+  interval: 1h
+  timeout: 15m
+  install:
+    disableWait: true
+  upgrade:
+    disableWait: true
+  values:
+    defaultPodOptions:
+      terminationGracePeriodSeconds: 30
+    controllers:
+      postgresql:
+        replicas: 1
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: docker.io/postgres
+              tag: "16-alpine"
+            env:
+              PGDATA: /var/lib/postgresql/data/pgdata
+              POSTGRES_USER: tigerfs
+              POSTGRES_DB: tigerfs
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: tigerfs-postgresql
+                    key: password
+            ports:
+              - containerPort: 5432
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["pg_isready", "-U", "tigerfs", "-d", "tigerfs"]
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["pg_isready", "-U", "tigerfs", "-d", "tigerfs"]
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+    service:
+      app:
+        controller: postgresql
+        ports:
+          postgres:
+            port: 5432
+    persistence:
+      data:
+        enabled: true
+        storageClass: harvester
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        globalMounts:
+          - path: /var/lib/postgresql/data

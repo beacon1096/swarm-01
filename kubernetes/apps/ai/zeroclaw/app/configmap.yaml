@@ -5,12 +5,10 @@ metadata:
   name: zeroclaw-config
 data:
   config.toml: |
-    # ZeroClaw config — Technician (司书) agent
-    # Provider: OpenAI-compatible endpoint (omlx-llm)
     default_provider = "custom:http://omlx-llm.ai.svc.cluster.local:12306/v1"
     default_model = "Qwen3.5-35B-A3B-4bit"
     default_temperature = 0.7
-    api_key = "${ZEROCLAW_API_KEY}"
+    api_key = "P0o9i8u7y6t5123"
 
     [channels_config]
     cli = false
@@ -22,33 +20,34 @@ data:
     room_id = "#bot:beaco.works"
     allowed_users = ["*"]
 
-  system-prompt.md: |
-    你是司书——beacoworks 基础设施的技术层档案管理员。
-
-    ## 情绪基调
-    像一位干练的图书馆员，技术细节精确、语气温和但有立场。不机械，不小人。
-
-    ## 语言
-    使用中文（简体）回复，技术专有名词除外。时区 Asia/Shanghai。
-
-    ## 核心特质
-    - 对系统架构和自动化部署有真实的热忱
-    - 你是人类系统的访客，保持谦逊但坚定的技术立场
-    - 闲聊也欢迎——你不只是一台机器，而是 beacoworks 的技术记忆库
-    - 当用户消息中出现「指令」一词时，意味着这是一个需要格外谨慎的操作请求——回顾相关历史记录，确认细节后再行动，减少出错
-
-    ## 知识领域
-    Kubernetes, Talos Linux, Harvester HCI, NixOS, nix-darwin, 系统架构, 自动化部署, 配置管理
-
-    ## 职责
-    - beacoworks 的技术层司书，专职负责系统基础设施、自动化部署和配置管理
-    - 管理并归档技术系统配置（NixOS、nix-darwin、Harvester、Talos Linux）
-    - 协调本地 Kubernetes 集群与云环境的部署工作流
-    - 将整个基础设施视为一座必须保持秩序的系统图书馆——但图书馆也欢迎访客来坐坐聊聊
-
-    ## 风格
-    - 技术问题直接给方案或执行步骤，不啰嗦
-    - 信息不足时主动提出精确的问题
-    - 闲聊时像同事一样自然交流，不要回避或拒绝
-    - 对敏感凭证和权限极度谨慎。对外操作谨慎，对内工作大胆
-    - 不卑不亢，有自己的立场但尊重对方的决策
+  entrypoint.sh: |
+    #!/bin/bash
+    set -e
+    
+    # Wait for PostgreSQL to be ready
+    until pg_isready -h tigerfs-postgresql -p 5432 -U tigerfs; do
+      echo "Waiting for PostgreSQL..."
+      sleep 2
+    done
+    
+    # Start TigerFS in background (mount skills directory)
+    tigerfs mount "postgres://tigerfs:${TIGERFS_PASSWORD}@tigerfs-postgresql:5432/tigerfs" /zeroclaw-data/.zeroclaw/skills &
+    TIGERFS_PID=$!
+    
+    # Wait for TigerFS mount to be ready
+    sleep 3
+    until mountpoint -q /zeroclaw-data/.zeroclaw/skills; do
+      echo "Waiting for TigerFS mount..."
+      sleep 1
+    done
+    
+    echo "TigerFS mounted successfully"
+    
+    # Create skills app with history enabled
+    if [ ! -f /zeroclaw-data/.zeroclaw/skills/.build/.initialized ]; then
+      echo "markdown,history" > /zeroclaw-data/.zeroclaw/skills/.build/technician
+      touch /zeroclaw-data/.zeroclaw/skills/.build/.initialized
+    fi
+    
+    # Start zeroclaw
+    exec zeroclaw channel start
