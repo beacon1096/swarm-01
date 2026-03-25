@@ -24,21 +24,26 @@ data:
     #!/bin/bash
     set -e
     
-    # Wait for PostgreSQL to be ready
-    until pg_isready -h tigerfs-postgresql -p 5432 -U tigerfs; do
+    # Wait for PostgreSQL port to be open
+    until nc -z tigerfs-postgresql 5432 2>/dev/null; do
       echo "Waiting for PostgreSQL..."
       sleep 2
     done
+    echo "PostgreSQL is ready"
     
     # Start TigerFS in background (mount skills directory)
     tigerfs mount "postgres://tigerfs:${TIGERFS_PASSWORD}@tigerfs-postgresql:5432/tigerfs" /zeroclaw-data/.zeroclaw/skills &
     TIGERFS_PID=$!
     
     # Wait for TigerFS mount to be ready
-    sleep 3
-    until mountpoint -q /zeroclaw-data/.zeroclaw/skills; do
+    sleep 5
+    until mountpoint -q /zeroclaw-data/.zeroclaw/skills 2>/dev/null; do
       echo "Waiting for TigerFS mount..."
       sleep 1
+      if ! kill -0 $TIGERFS_PID 2>/dev/null; then
+        echo "TigerFS died, exiting"
+        exit 1
+      fi
     done
     
     echo "TigerFS mounted successfully"
