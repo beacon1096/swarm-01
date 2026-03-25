@@ -41,6 +41,8 @@ spec:
           DISABLE_SSH: true
         actions:
           ENABLED: true
+        database:
+          SQLITE_JOURNAL_MODE: WAL
         service:
           DISABLE_REGISTRATION: false
           REQUIRE_SIGNIN_VIEW: false
