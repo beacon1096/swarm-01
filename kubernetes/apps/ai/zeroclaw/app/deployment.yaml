@@ -15,26 +15,59 @@ spec:
       labels:
         app: zeroclaw
     spec:
+      initContainers:
+      - name: install-tigerfs
+        image: alpine:3.19
+        command:
+        - sh
+        - -c
+        - |
+          apk add --no-cache curl tar
+          curl -sL https://github.com/timescale/tigerfs/releases/download/v0.5.0/tigerfs_Linux_x86_64.tar.gz | tar xzf - -C /tigerfs-bin
+          chmod +x /tigerfs-bin/tigerfs
+        volumeMounts:
+        - name: tigerfs-bin
+          mountPath: /tigerfs-bin
+
       containers:
       - name: zeroclaw
         image: ghcr.io/zeroclaw-labs/zeroclaw:v0.6.2-debian
-        command: ["zeroclaw", "channel", "start"]
+        command: ["/bin/bash", "/scripts/entrypoint.sh"]
+        env:
+        - name: TIGERFS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tigerfs-postgresql
+              key: password
+        securityContext:
+          privileged: true
         volumeMounts:
         - name: config
           mountPath: /zeroclaw-data/.zeroclaw/config.toml
           subPath: config.toml
+        - name: config
+          mountPath: /scripts/entrypoint.sh
+          subPath: entrypoint.sh
+        - name: tigerfs-bin
+          mountPath: /usr/local/bin/tigerfs
+          subPath: tigerfs
         - name: state
           mountPath: /zeroclaw-data/.zeroclaw/state
         resources:
           requests:
-            cpu: 50m
-            memory: 32Mi
+            cpu: 100m
+            memory: 128Mi
           limits:
-            memory: 256Mi
+            cpu: 500m
+            memory: 512Mi
+
       volumes:
       - name: config
         configMap:
           name: zeroclaw-config
+          defaultMode: 0755
+      - name: tigerfs-bin
+        emptyDir: {}
       - name: state
         persistentVolumeClaim:
           claimName: zeroclaw-state
