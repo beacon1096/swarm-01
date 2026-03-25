@@ -41,8 +41,8 @@ talos-ii/           Talos II (MS-01) cluster config (talconfig, harvester provis
 | **default** | echo | yes | -- | echo.* | Test/health-check endpoint |
 | **development** | Atuin | yes | yes | -- | Shell history sync |
 | **development** | Coder | yes | yes | code.* | Cloud dev environments, OIDC via Authentik |
-| **development** | Forgejo | yes | yes | forgejo.* | Git forge, mirroring, OIDC via Authentik |
-| **development** | Forgejo Runner | yes | -- | -- | CI runner for Forgejo |
+| **development** | Forgejo | -- | yes | forgejo.* | Git forge, mirroring, OIDC via Authentik |
+| **development** | Forgejo Runner | yes | -- | -- | CI runner for Forgejo (connects via public URL) |
 | **flux-system** | flux-instance | yes | yes | -- | Flux GitOps instance |
 | **flux-system** | flux-operator | yes | yes | -- | Flux operator |
 | **identity** | Authentik | yes | yes | id.* | OIDC/SSO provider |

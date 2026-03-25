@@ -3,21 +3,21 @@
 ## 集群规划
 
 ### talos-i (172.16.107.x)
-**定位：** 日志、监控、CI/CD 相关服务
+**定位：** 日志、监控、CI/CD Runner
 
 **保留服务：**
 - observability/* (victoria-metrics, victoria-logs, uptime-kuma, grafana)
-- development/forgejo, forgejo-runner
+- development/forgejo-runner
 - 任何 future CI/CD 工具
 
 ### talos-ii (10.20.0.x)
-**定位：** 生产工作负载、AI 服务、协作工具
+**定位：** 生产工作负载、AI 服务、协作工具、CI/CD
 
 **运行服务：**
 - ai/* (zeroclaw, mem0, eliza)
 - collaboration/* (matrix-synapse)
 - identity/* (authentik, vaultwarden)
-- development/* (coder, atuin)
+- development/* (coder, atuin, forgejo)
 - home/*
 - media/*
 - nix/* (attic)
@@ -76,13 +76,13 @@ zeroclaw 和 eliza 需要通过 Kubernetes 内部服务地址连接 matrix 和 m
 - [x] immich
 - [x] navidrome
 - [x] zeroclaw (已连接 matrix)
+- [x] forgejo (CI/CD artifact 存储需求)
 
 ### 需保留在 talos-i ✅
 - [x] victoria-metrics
 - [x] victoria-logs
 - [x] uptime-kuma
-- [x] forgejo (CI/CD)
-- [x] forgejo-runner
+- [x] forgejo-runner (通过公网连接 talos-ii 的 forgejo)
 
 ### 待处理
 - [ ] mem0 镜像需要推送到 zot registry
@@ -108,6 +108,7 @@ zeroclaw 和 eliza 需要通过 Kubernetes 内部服务地址连接 matrix 和 m
 **只在 talos-ii 运行：**
 - cloudflare-tunnel (外部流量入口)
 - sing-box (代理)
+- forgejo (CI/CD)
 
 **两边都运行：**
 - cert-manager (共用 Cloudflare API token)
