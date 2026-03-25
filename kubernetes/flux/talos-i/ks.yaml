@@ -133,11 +133,4 @@ spec:
         - op: add
           path: /spec/suspend
           value: true
-    - # Talos I: suspend sing-box (use talos-ii only)
-      target:
-        kind: Kustomization
-        name: sing-box
-      patch: |
-        - op: add
-          path: /spec/suspend
-          value: true
+    
