@@ -24,21 +24,18 @@ data:
     #!/bin/bash
     set -e
     
-    # Wait for PostgreSQL port to be open
-    until nc -z tigerfs-postgresql 5432 2>/dev/null; do
-      echo "Waiting for PostgreSQL..."
-      sleep 2
-    done
-    echo "PostgreSQL is ready"
-    
     # Start TigerFS in background (mount skills directory)
+    # TigerFS will handle PostgreSQL connection retries internally
     tigerfs mount "postgres://tigerfs:${TIGERFS_PASSWORD}@tigerfs-postgresql:5432/tigerfs" /zeroclaw-data/.zeroclaw/skills &
     TIGERFS_PID=$!
     
     # Wait for TigerFS mount to be ready
     sleep 5
-    until mountpoint -q /zeroclaw-data/.zeroclaw/skills 2>/dev/null; do
-      echo "Waiting for TigerFS mount..."
+    for i in $(seq 1 30); do
+      if mountpoint -q /zeroclaw-data/.zeroclaw/skills 2>/dev/null; then
+        break
+      fi
+      echo "Waiting for TigerFS mount... ($i/30)"
       sleep 1
       if ! kill -0 $TIGERFS_PID 2>/dev/null; then
         echo "TigerFS died, exiting"
@@ -46,9 +43,15 @@ data:
       fi
     done
     
+    if ! mountpoint -q /zeroclaw-data/.zeroclaw/skills 2>/dev/null; then
+      echo "TigerFS mount failed after 30 seconds"
+      exit 1
+    fi
+    
     echo "TigerFS mounted successfully"
     
     # Create skills app with history enabled
+    mkdir -p /zeroclaw-data/.zeroclaw/skills/.build
     if [ ! -f /zeroclaw-data/.zeroclaw/skills/.build/.initialized ]; then
       echo "markdown,history" > /zeroclaw-data/.zeroclaw/skills/.build/technician
       touch /zeroclaw-data/.zeroclaw/skills/.build/.initialized
