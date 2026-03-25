@@ -79,7 +79,33 @@ zeroclaw 和 eliza 需要通过 Kubernetes 内部服务地址连接 matrix 和 m
 - [x] forgejo-runner
 
 ### 待处理
-- [ ] OIDC 配置修复 (matrix → authentik SSO，等待证书签发)
 - [ ] mem0 镜像需要推送到 zot registry
 - [ ] 修复 talos-ii-03 NotReady 节点 (ms01-c 节点故障)
 - [ ] matrix 旧数据迁移 (可选)
+
+## 集群特定配置
+
+以下基础设施服务需要集群特定配置，已通过 Flux patch 处理：
+
+| 服务 | 配置项 | talos-i | talos-ii |
+|------|--------|---------|----------|
+| cilium | IP Pool | 172.16.107.0/24 | 10.20.0.0/24 |
+| envoy-gateway | LB IP | 172.16.107.31 | 10.20.0.200 |
+| envoy-internal | LB IP | - | 10.20.0.201 |
+| k8s-gateway | LB IP | - | 10.20.0.202 |
+| spegel | mirror targets | [] | [http://10.20.0.203:5000] |
+| cloudflare-dns | txtOwnerId | talos-i | talos-ii |
+| harvester-csi-driver | path | app/ | talos-ii/ |
+
+### 服务归属
+
+**只在 talos-ii 运行：**
+- cloudflare-tunnel (外部流量入口)
+- sing-box (代理)
+
+**两边都运行：**
+- cert-manager (共用 Cloudflare API token)
+- cilium, coredns, metrics-server, reloader
+- cloudflare-dns (不同的 txtOwnerId)
+- envoy-gateway, k8s-gateway
+- tailscale-operator

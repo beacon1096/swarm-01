@@ -162,3 +162,23 @@ spec:
         - op: add
           path: /spec/suspend
           value: true
+    - # Talos II: external-dns txtOwnerId
+      target:
+        kind: Kustomization
+        name: cloudflare-dns
+      patch: |
+        - op: add
+          path: /spec/patches/-
+          value:
+            patch: |-
+              apiVersion: helm.toolkit.fluxcd.io/v2
+              kind: HelmRelease
+              metadata:
+                name: cloudflare-dns
+              spec:
+                values:
+                  txtOwnerId: talos-ii
+            target:
+              group: helm.toolkit.fluxcd.io
+              kind: HelmRelease
+              name: cloudflare-dns
