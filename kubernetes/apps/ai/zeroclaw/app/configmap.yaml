@@ -9,6 +9,11 @@ data:
     default_model = "Qwen3.5-35B-A3B-4bit"
     default_temperature = 0.7
     api_key = "P0o9i8u7y6t5123"
+    
+    [gateway]
+    host = "0.0.0.0"
+    port = 42617
+    allow_public_bind = true
 
     [channels_config]
     cli = false
@@ -58,9 +63,10 @@ data:
     fi
     
     # Start gateway (web dashboard) in background
-    zeroclaw gateway --host 0.0.0.0 --port 42617 &
+    zeroclaw gateway start &
     GATEWAY_PID=$!
-    echo "Gateway started on 0.0.0.0:42617"
+    echo "Gateway started"
+    sleep 2
     
     # Start zeroclaw channel (Matrix)
     exec zeroclaw channel start
