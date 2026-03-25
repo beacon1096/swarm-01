@@ -29,9 +29,9 @@ data:
     #!/bin/bash
     set -e
     
-    # Start TigerFS in NFS mode (no FUSE required)
+    # Start TigerFS (NFS mode on Linux, auto-detect)
     mkdir -p /zeroclaw-data/.zeroclaw/skills
-    tigerfs mount --nfs "postgres://tigerfs:${TIGERFS_PASSWORD}@tigerfs-postgresql:5432/tigerfs" /zeroclaw-data/.zeroclaw/skills &
+    tigerfs mount "postgres://tigerfs:${TIGERFS_PASSWORD}@tigerfs-postgresql:5432/tigerfs" /zeroclaw-data/.zeroclaw/skills &
     TIGERFS_PID=$!
     
     # Wait for TigerFS NFS to be ready
