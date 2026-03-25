@@ -18,3 +18,10 @@ spec:
       enabled: true
       servicemonitor:
         enabled: true
+    extraEnv:
+      - name: HTTP_PROXY
+        value: "http://sing-box.network.svc.cluster.local:7890"
+      - name: HTTPS_PROXY
+        value: "http://sing-box.network.svc.cluster.local:7890"
+      - name: NO_PROXY
+        value: ".svc,.svc.cluster.local,cluster.local.,cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,127.0.0.1"
