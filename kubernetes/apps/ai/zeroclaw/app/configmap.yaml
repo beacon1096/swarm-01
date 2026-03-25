@@ -29,38 +29,10 @@ data:
     #!/bin/bash
     set -e
     
-    # Start TigerFS (NFS mode on Linux, auto-detect)
-    mkdir -p /zeroclaw-data/.zeroclaw/skills
-    tigerfs mount "postgres://tigerfs:${TIGERFS_PASSWORD}@tigerfs-postgresql:5432/tigerfs" /zeroclaw-data/.zeroclaw/skills &
-    TIGERFS_PID=$!
-    
-    # Wait for TigerFS NFS to be ready
-    sleep 5
-    for i in $(seq 1 30); do
-      if ls /zeroclaw-data/.zeroclaw/skills >/dev/null 2>&1; then
-        break
-      fi
-      echo "Waiting for TigerFS NFS... ($i/30)"
-      sleep 1
-      if ! kill -0 $TIGERFS_PID 2>/dev/null; then
-        echo "TigerFS died, exiting"
-        exit 1
-      fi
-    done
-    
-    if ! ls /zeroclaw-data/.zeroclaw/skills >/dev/null 2>&1; then
-      echo "TigerFS NFS failed after 30 seconds"
-      exit 1
-    fi
-    
-    echo "TigerFS NFS mounted successfully"
-    
-    # Create skills app with history enabled
+    # TODO: TigerFS requires FUSE (fusermount) which is not available in container
+    # For now, skip TigerFS mount and use emptyDir for skills
     mkdir -p /zeroclaw-data/.zeroclaw/skills/.build
-    if [ ! -f /zeroclaw-data/.zeroclaw/skills/.build/.initialized ]; then
-      echo "markdown,history" > /zeroclaw-data/.zeroclaw/skills/.build/technician
-      touch /zeroclaw-data/.zeroclaw/skills/.build/.initialized
-    fi
+    echo "markdown,history" > /zeroclaw-data/.zeroclaw/skills/.build/technician
     
     # Start gateway (web dashboard) in background
     zeroclaw gateway start &
