@@ -79,7 +79,7 @@ zeroclaw 和 eliza 需要通过 Kubernetes 内部服务地址连接 matrix 和 m
 - [x] forgejo-runner
 
 ### 待处理
-- [ ] OIDC 配置修复 (matrix → authentik 网络问题)
-- [ ] eliza 服务更新配置
-- [ ] 修复 talos-ii-03 NotReady 节点
+- [ ] OIDC 配置修复 (matrix → authentik SSO，等待证书签发)
+- [ ] mem0 镜像需要推送到 zot registry
+- [ ] 修复 talos-ii-03 NotReady 节点 (ms01-c 节点故障)
 - [ ] matrix 旧数据迁移 (可选)
