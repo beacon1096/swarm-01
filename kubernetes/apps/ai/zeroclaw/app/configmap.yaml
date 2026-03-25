@@ -25,7 +25,6 @@ data:
     set -e
     
     # Start TigerFS in NFS mode (no FUSE required)
-    # NFS mode works without fusermount and is cross-platform
     mkdir -p /zeroclaw-data/.zeroclaw/skills
     tigerfs mount --nfs "postgres://tigerfs:${TIGERFS_PASSWORD}@tigerfs-postgresql:5432/tigerfs" /zeroclaw-data/.zeroclaw/skills &
     TIGERFS_PID=$!
@@ -58,5 +57,10 @@ data:
       touch /zeroclaw-data/.zeroclaw/skills/.build/.initialized
     fi
     
-    # Start zeroclaw
+    # Start gateway (web dashboard) in background
+    zeroclaw gateway --host 0.0.0.0 --port 42617 &
+    GATEWAY_PID=$!
+    echo "Gateway started on 0.0.0.0:42617"
+    
+    # Start zeroclaw channel (Matrix)
     exec zeroclaw channel start
