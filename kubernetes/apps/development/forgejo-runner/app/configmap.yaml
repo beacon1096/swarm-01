@@ -1,0 +1,53 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: forgejo-runner-transparent-proxy
+data:
+  sing-box.json: |
+    {
+      "log": {
+        "level": "info"
+      },
+      "inbounds": [
+        {
+          "type": "redirect",
+          "tag": "redir-in",
+          "listen": "::",
+          "listen_port": 12345,
+          "sniff": true
+        }
+      ],
+      "outbounds": [
+        {
+          "type": "socks",
+          "tag": "upstream-proxy",
+          "server": "sing-box.network.svc.cluster.local",
+          "server_port": 7890
+        },
+        {
+          "type": "direct",
+          "tag": "direct"
+        }
+      ],
+      "route": {
+        "auto_detect_interface": true,
+        "rules": [
+          {
+            "ip_is_private": true,
+            "outbound": "direct"
+          },
+          {
+            "domain_suffix": [
+              ".svc",
+              ".svc.cluster.local",
+              ".cluster.local",
+              ".beaco.works",
+              ".beacoworks.xyz"
+            ],
+            "outbound": "direct"
+          }
+        ],
+        "final": "upstream-proxy"
+      }
+    }
