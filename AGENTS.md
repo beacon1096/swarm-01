@@ -106,9 +106,9 @@ zeroclaw 和 eliza 需要通过 Kubernetes 内部服务地址连接 matrix 和 m
 ### 服务归属
 
 **只在 talos-ii 运行：**
-- cloudflare-tunnel (外部流量入口)
+- cloudflare-tunnel (外部流量入口，forgejo.beaco.works 已排除)
 - sing-box (代理)
-- forgejo (CI/CD)
+- forgejo (CI/CD，通过 Tailscale 暴露给外部 VPS caddy 反代)
 
 **两边都运行：**
 - cert-manager (共用 Cloudflare API token)
