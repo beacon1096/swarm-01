@@ -5,5 +5,5 @@ resources:
   - ./admin.sops.yaml
   - ./authentik.sops.yaml
   - ./helmrelease.yaml
-  - ./httproute.yaml
+  - ./service-tailscale.yaml
   - ./ocirepository.yaml

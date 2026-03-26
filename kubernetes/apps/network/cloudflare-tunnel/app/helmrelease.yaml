@@ -70,6 +70,8 @@ spec:
         data:
           config.yaml: |-
             ingress:
+              - hostname: "forgejo.${SECRET_DOMAIN}"
+                service: http_status:404
               - hostname: "*.${SECRET_DOMAIN}"
                 originRequest:
                   http2Origin: true
