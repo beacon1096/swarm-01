@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: forgejo-runner-transparent-proxy
+  namespace: development
 data:
   sing-box.json: |
     {
