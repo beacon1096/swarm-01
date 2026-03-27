@@ -1,0 +1,11 @@
+apiVersion: harvesterhci.io/v1beta1
+kind: VirtualMachineImage
+metadata:
+  name: talos-secureboot-nvme
+  namespace: talos
+  annotations:
+    harvesterhci.io/storageClassName: harvester-longhorn
+spec:
+  displayName: "Talos v1.12.4 SecureBoot NVMe"
+  sourceType: upload
+  url: ""

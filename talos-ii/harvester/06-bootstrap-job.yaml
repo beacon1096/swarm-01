@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: talos-bootstrap
+  namespace: talos
+spec:
+  ttlSecondsAfterFinished: 60
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: bootstrap
+          image: ghcr.io/siderolabs/talosctl:v1.12.4
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -e
+              echo "Applying config to talos-ii-01..."
+              talosctl apply-config --insecure --nodes 10.20.0.11 --file /configs/talos-ii-talos-ii-01.yaml
+              echo "Applying config to talos-ii-02..."
+              talosctl apply-config --insecure --nodes 10.20.0.12 --file /configs/talos-ii-talos-ii-02.yaml
+              echo "Applying config to talos-ii-03..."
+              talosctl apply-config --insecure --nodes 10.20.0.13 --file /configs/talos-ii-talos-ii-03.yaml
+              echo "Waiting 60s for nodes to reboot..."
+              sleep 60
+              echo "Bootstrapping etcd on talos-ii-01..."
+              talosctl bootstrap --nodes 10.20.0.11 --endpoints 10.20.0.11 --talosconfig /configs/talosconfig
+              echo "Bootstrap initiated."
+          volumeMounts:
+            - name: configs
+              mountPath: /configs
+              readOnly: true
+      volumes:
+        - name: configs
+          secret:
+            secretName: talos-ii-configs

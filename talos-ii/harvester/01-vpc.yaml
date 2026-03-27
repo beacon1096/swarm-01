@@ -1,0 +1,7 @@
+apiVersion: kubeovn.io/v1
+kind: Vpc
+metadata:
+  name: talos-ii-vpc
+spec:
+  namespaces:
+    - talos

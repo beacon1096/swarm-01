@@ -1,0 +1,222 @@
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: talos-ii-01
+  namespace: talos
+  labels:
+    app: talos-ii
+    role: control-plane
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      labels:
+        app: talos-ii
+        role: control-plane
+        vm.kubevirt.io/name: talos-ii-01
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: talos-ii
+                topologyKey: kubernetes.io/hostname
+      domain:
+        cpu:
+          cores: 4
+        memory:
+          guest: 16Gi
+        devices:
+          disks:
+            - name: root
+              disk:
+                bus: virtio
+              bootOrder: 1
+          interfaces:
+            - name: ovn
+              binding:
+                name: managedtap
+          tpm: {}
+        features:
+          smm:
+            enabled: true
+        firmware:
+          bootloader:
+            efi:
+              secureBoot: true
+      networks:
+        - name: ovn
+          multus:
+            networkName: talos/talos-ii-net
+      volumes:
+        - name: root
+          dataVolume:
+            name: talos-ii-01-root
+  dataVolumeTemplates:
+    - metadata:
+        name: talos-ii-01-root
+        namespace: talos
+      spec:
+        pvc:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 128Gi
+          storageClassName: harvester-longhorn
+        source:
+          pvc:
+            namespace: talos
+            name: talos-secureboot-nvme
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: talos-ii-02
+  namespace: talos
+  labels:
+    app: talos-ii
+    role: control-plane
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      labels:
+        app: talos-ii
+        role: control-plane
+        vm.kubevirt.io/name: talos-ii-02
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: talos-ii
+                topologyKey: kubernetes.io/hostname
+      domain:
+        cpu:
+          cores: 4
+        memory:
+          guest: 16Gi
+        devices:
+          disks:
+            - name: root
+              disk:
+                bus: virtio
+              bootOrder: 1
+          interfaces:
+            - name: ovn
+              binding:
+                name: managedtap
+          tpm: {}
+        features:
+          smm:
+            enabled: true
+        firmware:
+          bootloader:
+            efi:
+              secureBoot: true
+      networks:
+        - name: ovn
+          multus:
+            networkName: talos/talos-ii-net
+      volumes:
+        - name: root
+          dataVolume:
+            name: talos-ii-02-root
+  dataVolumeTemplates:
+    - metadata:
+        name: talos-ii-02-root
+        namespace: talos
+      spec:
+        pvc:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 128Gi
+          storageClassName: harvester-longhorn
+        source:
+          pvc:
+            namespace: talos
+            name: talos-secureboot-nvme
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: talos-ii-03
+  namespace: talos
+  labels:
+    app: talos-ii
+    role: control-plane
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      labels:
+        app: talos-ii
+        role: control-plane
+        vm.kubevirt.io/name: talos-ii-03
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: talos-ii
+                topologyKey: kubernetes.io/hostname
+      domain:
+        cpu:
+          cores: 4
+        memory:
+          guest: 16Gi
+        devices:
+          disks:
+            - name: root
+              disk:
+                bus: virtio
+              bootOrder: 1
+          interfaces:
+            - name: ovn
+              binding:
+                name: managedtap
+          tpm: {}
+        features:
+          smm:
+            enabled: true
+        firmware:
+          bootloader:
+            efi:
+              secureBoot: true
+      networks:
+        - name: ovn
+          multus:
+            networkName: talos/talos-ii-net
+      volumes:
+        - name: root
+          dataVolume:
+            name: talos-ii-03-root
+  dataVolumeTemplates:
+    - metadata:
+        name: talos-ii-03-root
+        namespace: talos
+      spec:
+        pvc:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 128Gi
+          storageClassName: harvester-longhorn
+        source:
+          pvc:
+            namespace: talos
+            name: talos-secureboot-nvme

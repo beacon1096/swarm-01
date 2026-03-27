@@ -1,0 +1,13 @@
+apiVersion: kubeovn.io/v1
+kind: Subnet
+metadata:
+  name: talos-ii-subnet
+spec:
+  vpc: talos-ii-vpc
+  cidrBlock: 10.20.0.0/24
+  gateway: 10.20.0.1
+  excludeIps:
+    - "10.20.0.1..10.20.0.10"
+  enableDHCP: true
+  natOutgoing: true
+  provider: talos-ii-net.talos.ovn
