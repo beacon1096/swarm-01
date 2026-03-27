@@ -73,6 +73,12 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
     service:
       app:
         controller: n8n
