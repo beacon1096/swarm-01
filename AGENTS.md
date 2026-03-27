@@ -17,7 +17,7 @@
 - ai/* (zeroclaw, mem0, eliza)
 - collaboration/* (matrix-synapse)
 - identity/* (authentik, vaultwarden)
-- development/* (coder, atuin, forgejo)
+- development/* (coder, atuin, forgejo, n8n)
 - home/*
 - media/*
 - nix/* (attic)
@@ -31,6 +31,11 @@
   - 根目录 README.md：整体架构和快速开始
   - `kubernetes/apps/*/README.md`：服务说明和配置
   - `bootstrap/README.md`：部署流程
+
+### 域名配置规范
+- **禁止在清单、文档或注释中写入硬编码的完整域名**
+- 必须使用仓库既有替换变量（例如 `${SECRET_DOMAIN}`）或 Secret 引用来表达域名/端点
+- 如需示例，请使用 `service.${SECRET_DOMAIN}` 这类形式，避免提交真实完整域名
 
 ### 有状态服务部署原则
 - **同一时刻，有状态服务只能部署在一个集群**
@@ -106,7 +111,7 @@ zeroclaw 和 eliza 需要通过 Kubernetes 内部服务地址连接 matrix 和 m
 ### 服务归属
 
 **只在 talos-ii 运行：**
-- cloudflare-tunnel (外部流量入口，forgejo.beaco.works 已排除)
+- cloudflare-tunnel (外部流量入口，`forgejo.${SECRET_DOMAIN}` 已排除)
 - sing-box (代理)
 - forgejo (CI/CD，通过 Tailscale 暴露给外部 VPS caddy 反代)
 

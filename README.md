@@ -43,6 +43,7 @@ talos-ii/           Talos II (MS-01) cluster config (talconfig, harvester provis
 | **development** | Coder | yes | yes | code.* | Cloud dev environments, OIDC via Authentik |
 | **development** | Forgejo | -- | yes | forgejo.* | Git forge, mirroring, OIDC via Authentik |
 | **development** | Forgejo Runner | yes | -- | -- | CI runner for Forgejo (connects via public URL) |
+| **development** | n8n | -- | yes | automaton.* | Workflow automation, PostgreSQL-backed |
 | **flux-system** | flux-instance | yes | yes | -- | Flux GitOps instance |
 | **flux-system** | flux-operator | yes | yes | -- | Flux operator |
 | **identity** | Authentik | yes | yes | id.* | OIDC/SSO provider |

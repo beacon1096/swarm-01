@@ -8,3 +8,4 @@ This directory manages the applications and configurations for the `development`
 - **coder**: Self-hosted remote development environments.
 - **forgejo**: Self-hosted lightweight software forge.
 - **forgejo-runner**: CI/CD runner for Forgejo.
+- **n8n**: Workflow automation platform.

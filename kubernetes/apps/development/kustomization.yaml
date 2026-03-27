@@ -11,4 +11,5 @@ resources:
   - ./forgejo/ks.yaml
   - ./coder/ks.yaml
   - ./atuin/ks.yaml
+  - ./n8n/ks.yaml
   - ./forgejo-runner/ks.yaml

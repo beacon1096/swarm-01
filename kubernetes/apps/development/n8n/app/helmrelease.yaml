@@ -1,0 +1,100 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: n8n
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: n8n
+  interval: 1h
+  dependsOn:
+    - name: n8n-postgresql
+  values:
+    controllers:
+      n8n:
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: docker.n8n.io/n8nio/n8n
+              tag: 2.13.3
+            env:
+              DB_TYPE: postgresdb
+              DB_POSTGRESDB_DATABASE: n8n
+              DB_POSTGRESDB_HOST: n8n-postgresql
+              DB_POSTGRESDB_PORT: "5432"
+              DB_POSTGRESDB_USER: n8n
+              DB_POSTGRESDB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: n8n-secret
+                    key: pg-password
+              GENERIC_TIMEZONE: Asia/Shanghai
+              # Keep the public base URL stable for SAML SP metadata and ACS URLs.
+              # Authentik IdP metadata planned: https://id.${SECRET_DOMAIN}/application/saml/n8n/metadata/
+              N8N_EDITOR_BASE_URL: https://automaton.${SECRET_DOMAIN}
+              N8N_ENCRYPTION_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: n8n-secret
+                    key: n8n-encryption-key
+              N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+              N8N_HOST: automaton.${SECRET_DOMAIN}
+              N8N_PORT: "5678"
+              N8N_PROTOCOL: https
+              N8N_PROXY_HOPS: "1"
+              N8N_RUNNERS_ENABLED: "true"
+              NODE_ENV: production
+              TZ: Asia/Shanghai
+              WEBHOOK_URL: https://automaton.${SECRET_DOMAIN}/
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 5678
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 5678
+                  initialDelaySeconds: 20
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    service:
+      app:
+        controller: n8n
+        ports:
+          http:
+            port: 5678
+    persistence:
+      data:
+        enabled: true
+        storageClass: harvester
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        globalMounts:
+          - path: /home/node/.n8n
+    route:
+      app:
+        hostnames: ["automaton.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 5678
