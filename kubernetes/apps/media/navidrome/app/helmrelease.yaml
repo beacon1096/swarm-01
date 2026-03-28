@@ -15,7 +15,7 @@ spec:
           app:
             image:
               repository: ghcr.io/navidrome/navidrome
-              tag: "0.55.1"
+              tag: "0.60.3"
             env:
               ND_SCANSCHEDULE: "1h"
               ND_LOGLEVEL: info
