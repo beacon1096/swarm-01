@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: docker.io/neo4j
-              tag: 5.26.4
+              tag: 5.26.23
             env:
               NEO4J_AUTH:
                 valueFrom:
