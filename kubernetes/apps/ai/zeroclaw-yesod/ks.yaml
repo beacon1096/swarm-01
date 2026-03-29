@@ -2,11 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: eliza
+  name: zeroclaw-yesod
   namespace: ai
 spec:
   interval: 10m
-  path: ./kubernetes/apps/ai/eliza/app
+  path: ./kubernetes/apps/ai/zeroclaw-yesod/app
   prune: true
   sourceRef:
     kind: GitRepository

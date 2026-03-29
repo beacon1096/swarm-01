@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zeroclaw-kether-tailscale
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "zeroclaw-kether"
+spec:
+  type: ClusterIP
+  selector:
+    app: zeroclaw-kether
+  ports:
+    - name: http
+      port: 42617
+      targetPort: 42617
+      protocol: TCP

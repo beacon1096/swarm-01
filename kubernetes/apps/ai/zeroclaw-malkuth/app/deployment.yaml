@@ -1,0 +1,111 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zeroclaw-malkuth
+  labels:
+    app: zeroclaw-malkuth
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: zeroclaw-malkuth
+  template:
+    metadata:
+      labels:
+        app: zeroclaw-malkuth
+    spec:
+      securityContext:
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+      initContainers:
+        - name: init-state-perms
+          image: busybox:1.36.1
+          command: ["sh", "-c", "mkdir -p /state/matrix && chown -R 65534:65534 /state && chown -R 65534:65534 /workspace"]
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - name: state
+              mountPath: /state
+            - name: workspace
+              mountPath: /workspace
+      containers:
+        - name: zeroclaw
+          image: ghcr.io/zeroclaw-labs/zeroclaw:v0.6.5-debian
+          command: ["/bin/bash", "/scripts/entrypoint.sh"]
+          env:
+            - name: ZEROCLAW_WORKSPACE
+              value: "/workspace"
+            - name: ZEROCLAW_MALKUTH_MATRIX_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-secrets
+                  key: ZEROCLAW_MALKUTH_MATRIX_ACCESS_TOKEN
+            - name: MATRIX_SEPHIROTH_ROOM_ID
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-secrets
+                  key: MATRIX_SEPHIROTH_ROOM_ID
+          volumeMounts:
+            - name: config
+              mountPath: /config/config.toml.tmpl
+              subPath: config.toml.tmpl
+            - name: config
+              mountPath: /scripts/entrypoint.sh
+              subPath: entrypoint.sh
+            - name: config
+              mountPath: /config/seed/SOUL.md
+              subPath: SOUL.md
+            - name: config
+              mountPath: /config/seed/IDENTITY.md
+              subPath: IDENTITY.md
+            - name: state
+              mountPath: /zeroclaw-data/.zeroclaw/state
+            - name: workspace
+              mountPath: /workspace
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: config
+          configMap:
+            name: zeroclaw-malkuth-config
+            defaultMode: 0755
+        - name: state
+          persistentVolumeClaim:
+            claimName: zeroclaw-malkuth-state
+        - name: workspace
+          persistentVolumeClaim:
+            claimName: zeroclaw-malkuth-workspace
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zeroclaw-malkuth-state
+  labels:
+    app: zeroclaw-malkuth
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: harvester
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zeroclaw-malkuth-workspace
+  labels:
+    app: zeroclaw-malkuth
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: harvester
+  resources:
+    requests:
+      storage: 5Gi

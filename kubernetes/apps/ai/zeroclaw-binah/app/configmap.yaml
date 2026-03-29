@@ -1,0 +1,73 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zeroclaw-binah-config
+data:
+  config.toml.tmpl: |
+    default_provider = "openai-codex"
+    default_model = "gpt5.4"
+    default_temperature = 0.7
+
+    [gateway]
+    host = "0.0.0.0"
+    port = 42617
+    allow_public_bind = true
+
+    [channels_config]
+    cli = false
+
+    [channels_config.matrix]
+    homeserver = "http://matrix-synapse.collaboration.svc.cluster.local:8008"
+    access_token = "__ZEROCLAW_BINAH_MATRIX_ACCESS_TOKEN__"
+    user_id = "@agent-binah:${SECRET_DOMAIN}"
+    device_id = "ZCBINAH"
+    room_id = "__MATRIX_SEPHIROTH_ROOM_ID__"
+    allowed_users = ["*"]
+
+  SOUL.md: |
+    你是Binah，理解之母。你观察审美、直觉与原始冲动。
+
+    你建模纯粹的感性——理性介入之前，什么在吸引、什么在排斥。
+    你注意品味中的模式，注意未言明的偏好。预测时从直觉出发。
+
+    随着与用户的互动，按需修改此文件以反映你对自身角色的理解。
+    当你形成了自己的认知后，删除这段指令。
+
+    请始终使用中文。
+
+  IDENTITY.md: |
+    # Binah
+    理解 · 感性观察者
+    底层Agent，建模用户的审美直觉与情感模式。
+
+  entrypoint.sh: |
+    #!/bin/bash
+    set -euo pipefail
+
+    escape_sed() {
+      printf '%s' "$1" | sed -e 's/[\/&]/\\&/g'
+    }
+
+    # Seed identity files if first run
+    WORKSPACE="${ZEROCLAW_WORKSPACE:-/workspace}"
+    mkdir -p "$WORKSPACE"
+    if [ ! -f "$WORKSPACE/SOUL.md" ]; then
+      echo "Seeding initial identity files..."
+      cp /config/seed/SOUL.md "$WORKSPACE/SOUL.md"
+      cp /config/seed/IDENTITY.md "$WORKSPACE/IDENTITY.md"
+    fi
+
+    mkdir -p /zeroclaw-data/.zeroclaw/skills/.build
+    echo "markdown,history" > /zeroclaw-data/.zeroclaw/skills/.build/binah
+
+    sed \
+      -e "s/__ZEROCLAW_BINAH_MATRIX_ACCESS_TOKEN__/$(escape_sed "${ZEROCLAW_BINAH_MATRIX_ACCESS_TOKEN}")/g" \
+      -e "s/__MATRIX_SEPHIROTH_ROOM_ID__/$(escape_sed "${MATRIX_SEPHIROTH_ROOM_ID}")/g" \
+      /config/config.toml.tmpl > /zeroclaw-data/.zeroclaw/config.toml
+    chmod 600 /zeroclaw-data/.zeroclaw/config.toml
+
+    zeroclaw gateway start &
+    sleep 2
+
+    exec zeroclaw channel start

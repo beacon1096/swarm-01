@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: zeroclaw-tailscale
+  name: zeroclaw-yesod-tailscale
   annotations:
     tailscale.com/expose: "true"
-    tailscale.com/hostname: "zeroclaw"
+    tailscale.com/hostname: "zeroclaw-yesod"
 spec:
   type: ClusterIP
   selector:
-    app: zeroclaw
+    app: zeroclaw-yesod
   ports:
     - name: http
       port: 42617

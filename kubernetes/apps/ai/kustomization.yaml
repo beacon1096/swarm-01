@@ -9,5 +9,10 @@ components:
 resources:
   - ./namespace.yaml
   - ./mem0/ks.yaml
-  - ./eliza/ks.yaml
-  - ./zeroclaw/ks.yaml
+  - ./tigerfs/ks.yaml
+  - ./zeroclaw-kether/ks.yaml
+  # Canary: deploy remaining agents after kether is verified
+  # - ./zeroclaw-chokmah/ks.yaml
+  # - ./zeroclaw-binah/ks.yaml
+  # - ./zeroclaw-yesod/ks.yaml
+  # - ./zeroclaw-malkuth/ks.yaml

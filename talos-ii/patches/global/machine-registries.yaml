@@ -21,6 +21,9 @@ machine:
         endpoints:
           - http://10.20.0.203:5000/v2/elastic.co
           - https://docker.elastic.co
+      10.20.0.203:5000:
+        endpoints:
+          - http://10.20.0.203:5000
   env:
     HTTP_PROXY: "http://10.45.76.23:7890"
     HTTPS_PROXY: "http://10.45.76.23:7890"

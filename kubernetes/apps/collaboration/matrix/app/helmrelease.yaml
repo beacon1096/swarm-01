@@ -30,9 +30,6 @@ spec:
     config:
       reportStats: false
       enableRegistration: false
-      registrationSharedSecret:
-        existingSecret: matrix-synapse-secret
-        secretKey: registrationSharedSecret
 
     extraConfig:
       # -- Private server, disable federation
@@ -40,15 +37,16 @@ spec:
       allow_public_rooms_over_federation: false
       allow_public_rooms_without_auth: false
 
-    # -- OIDC credentials stored in a Secret (not ConfigMap) via extraSecrets
+    # -- Secrets rendered into conf.d/secrets.yaml (overrides config values)
     extraSecrets:
+      registration_shared_secret: ${MATRIX_REGISTRATION_SHARED_SECRET}
       oidc_providers:
         - idp_id: authentik
           idp_name: "Authentik"
           discover: true
           issuer: "https://id.${SECRET_DOMAIN}/application/o/matrix/"
-          client_id: "ECe7Lng2YKh13UTZYPdjMyrBy3IxXuSfZUj5YFDp"
-          client_secret: "lYCTeZPsvhfNH760JZLAbGP9viLwctAolDEo1RiZ3c2SpaxJh3SEQ1Vu4kcnzCC8trmtjW7Az9FPTeX06SahpKTB93oX0pOqKT4tc7zG3hvyPwWvIBIbCMHM5MWRzFXX"
+          client_id: "${MATRIX_OIDC_CLIENT_ID}"
+          client_secret: "${MATRIX_OIDC_CLIENT_SECRET}"
           scopes: ["openid", "profile", "email"]
           user_mapping_provider:
             config:

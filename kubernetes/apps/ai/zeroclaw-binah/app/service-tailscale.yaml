@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zeroclaw-binah-tailscale
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "zeroclaw-binah"
+spec:
+  type: ClusterIP
+  selector:
+    app: zeroclaw-binah
+  ports:
+    - name: http
+      port: 42617
+      targetPort: 42617
+      protocol: TCP

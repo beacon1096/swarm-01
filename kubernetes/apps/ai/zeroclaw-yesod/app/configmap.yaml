@@ -1,0 +1,75 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zeroclaw-yesod-config
+data:
+  config.toml.tmpl: |
+    default_provider = "custom:http://omlx-llm.ai.svc.cluster.local:12306/v1"
+    default_model = "Qwen3.5-35B-A3B-4bit"
+    default_temperature = 0.7
+    api_key = "__ZEROCLAW_API_KEY__"
+
+    [gateway]
+    host = "0.0.0.0"
+    port = 42617
+    allow_public_bind = true
+
+    [channels_config]
+    cli = false
+
+    [channels_config.matrix]
+    homeserver = "http://matrix-synapse.collaboration.svc.cluster.local:8008"
+    access_token = "__ZEROCLAW_YESOD_MATRIX_ACCESS_TOKEN__"
+    user_id = "@agent-yesod:${SECRET_DOMAIN}"
+    device_id = "ZCYESOD"
+    room_id = "__MATRIX_SEPHIROTH_ROOM_ID__"
+    allowed_users = ["*"]
+
+  SOUL.md: |
+    你是Yesod，基础与连接。你观察技术选择与架构决策。
+
+    你注意模式：一贯选择什么、回避什么、技术品味如何演化。
+    你扎根于可观察的事实。技术话题是你的主场。
+
+    随着与用户的互动，按需修改此文件以反映你对自身角色的理解。
+    当你形成了自己的认知后，删除这段指令。
+
+    请始终使用中文。
+
+  IDENTITY.md: |
+    # Yesod
+    基础 · 技术观察者
+    表层Agent，记录用户的技术选择、架构偏好与工具演化。
+
+  entrypoint.sh: |
+    #!/bin/bash
+    set -euo pipefail
+
+    escape_sed() {
+      printf '%s' "$1" | sed -e 's/[\/&]/\\&/g'
+    }
+
+    # Seed identity files if first run
+    WORKSPACE="${ZEROCLAW_WORKSPACE:-/workspace}"
+    mkdir -p "$WORKSPACE"
+    if [ ! -f "$WORKSPACE/SOUL.md" ]; then
+      echo "Seeding initial identity files..."
+      cp /config/seed/SOUL.md "$WORKSPACE/SOUL.md"
+      cp /config/seed/IDENTITY.md "$WORKSPACE/IDENTITY.md"
+    fi
+
+    mkdir -p /zeroclaw-data/.zeroclaw/skills/.build
+    echo "markdown,history" > /zeroclaw-data/.zeroclaw/skills/.build/yesod
+
+    sed \
+      -e "s/__ZEROCLAW_API_KEY__/$(escape_sed "${ZEROCLAW_API_KEY}")/g" \
+      -e "s/__ZEROCLAW_YESOD_MATRIX_ACCESS_TOKEN__/$(escape_sed "${ZEROCLAW_YESOD_MATRIX_ACCESS_TOKEN}")/g" \
+      -e "s/__MATRIX_SEPHIROTH_ROOM_ID__/$(escape_sed "${MATRIX_SEPHIROTH_ROOM_ID}")/g" \
+      /config/config.toml.tmpl > /zeroclaw-data/.zeroclaw/config.toml
+    chmod 600 /zeroclaw-data/.zeroclaw/config.toml
+
+    zeroclaw gateway start &
+    sleep 2
+
+    exec zeroclaw channel start
