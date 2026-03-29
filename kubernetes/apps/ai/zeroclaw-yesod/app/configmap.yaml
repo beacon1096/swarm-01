@@ -69,7 +69,9 @@ data:
       /config/config.toml.tmpl > /zeroclaw-data/.zeroclaw/config.toml
     chmod 600 /zeroclaw-data/.zeroclaw/config.toml
 
-    zeroclaw gateway start &
+    export ZEROCLAW_CONFIG_DIR="/zeroclaw-data/.zeroclaw"
+
+    zeroclaw --config-dir "$ZEROCLAW_CONFIG_DIR" gateway start &
     sleep 2
 
-    exec zeroclaw channel start
+    exec zeroclaw --config-dir "$ZEROCLAW_CONFIG_DIR" channel start
