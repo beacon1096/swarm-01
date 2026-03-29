@@ -36,6 +36,8 @@ spec:
           image: ghcr.io/zeroclaw-labs/zeroclaw:v0.6.5-debian
           command: ["/bin/bash", "/scripts/entrypoint.sh"]
           env:
+            - name: HOME
+              value: "/zeroclaw-data"
             - name: ZEROCLAW_WORKSPACE
               value: "/workspace"
             - name: ZEROCLAW_MALKUTH_MATRIX_ACCESS_TOKEN
