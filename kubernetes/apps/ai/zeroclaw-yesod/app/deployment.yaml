@@ -22,7 +22,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       initContainers:
         - name: init-state-perms
-          image: busybox:1.36.1
+          image: busybox:1.37.0
           command: ["sh", "-c", "mkdir -p /state/matrix && chown -R 65534:65534 /state && chown -R 65534:65534 /workspace"]
           securityContext:
             runAsUser: 0
