@@ -32,6 +32,11 @@ spec:
                 secretKeyRef:
                   name: cluster-secrets
                   key: ZEROCLAW_API_KEY
+            - name: OPENVIKING_ROOT_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-secrets
+                  key: ZEROCLAW_API_KEY
           volumeMounts:
             - name: scripts
               mountPath: /scripts
