@@ -24,6 +24,8 @@ spec:
             - containerPort: 1933
               name: http
           env:
+            - name: OPENVIKING_CONFIG_FILE
+              value: /config/ov.conf
             - name: OPENVIKING_VLM_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -36,7 +38,7 @@ spec:
                   key: ZEROCLAW_API_KEY
           volumeMounts:
             - name: config
-              mountPath: /root/.openviking/ov.conf
+              mountPath: /config/ov.conf
               subPath: ov.conf
             - name: data
               mountPath: /data
