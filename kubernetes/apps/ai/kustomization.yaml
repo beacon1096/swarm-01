@@ -8,10 +8,10 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./mem0/ks.yaml
   - ./tigerfs/ks.yaml
+  - ./openviking/ks.yaml
   - ./zeroclaw-kether/ks.yaml
-  # Canary: deploy remaining agents after kether is verified
+  # Remaining agents — uncomment after kether canary passes
   # - ./zeroclaw-chokmah/ks.yaml
   # - ./zeroclaw-binah/ks.yaml
   # - ./zeroclaw-yesod/ks.yaml

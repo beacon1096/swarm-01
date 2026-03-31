@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openviking-config
+data:
+  ov.conf: |
+    [llm]
+    provider = "litellm"
+    model = "openai/gpt-4o"
+    api_key_env = "OPENVIKING_VLM_API_KEY"
+
+    [embedding]
+    provider = "openai"
+    model = "text-embedding-3-small"
+    api_key_env = "OPENVIKING_EMBEDDING_API_KEY"
+
+    [storage]
+    workspace = "/data/workspace"
+    backend = "localfs"
+
+    [server]
+    host = "0.0.0.0"
+    port = 1933
