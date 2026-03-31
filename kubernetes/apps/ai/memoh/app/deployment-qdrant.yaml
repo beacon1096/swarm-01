@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memoh-qdrant
+  labels:
+    app: memoh-qdrant
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: memoh-qdrant
+  template:
+    metadata:
+      labels:
+        app: memoh-qdrant
+    spec:
+      containers:
+        - name: qdrant
+          image: qdrant/qdrant:latest
+          ports:
+            - containerPort: 6333
+              name: http
+            - containerPort: 6334
+              name: grpc
+          volumeMounts:
+            - name: data
+              mountPath: /qdrant/storage
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 6333
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: memoh-qdrant-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memoh-qdrant-data
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: harvester
+  resources:
+    requests:
+      storage: 5Gi

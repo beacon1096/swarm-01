@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memoh-web
+  labels:
+    app: memoh-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memoh-web
+  template:
+    metadata:
+      labels:
+        app: memoh-web
+    spec:
+      containers:
+        - name: web
+          image: memohai/web:latest
+          ports:
+            - containerPort: 8082
+              name: http
+          env:
+            # Web UI needs to reach the server API
+            - name: MEMOH_SERVER_URL
+              value: http://memoh-server:8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8082
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8082
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: "500m"
+              memory: 256Mi

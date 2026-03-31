@@ -1,0 +1,12 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - configmap.yaml
+  - statefulset-postgres.yaml
+  - deployment-qdrant.yaml
+  - job-migration.yaml
+  - deployment-server.yaml
+  - deployment-web.yaml
+  - services.yaml
+  - service-tailscale.yaml

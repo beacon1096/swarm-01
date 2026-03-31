@@ -1,0 +1,82 @@
+---
+# Memoh Spike Test — Phase 2
+#
+# Purpose: Validate whether memohai/server can start its embedded containerd
+# on Talos Linux K8s (privileged + pid:host required).
+#
+# Apply manually: kubectl apply -f spike-test.yaml -n ai
+# Remove after test: kubectl delete -f spike-test.yaml -n ai
+#
+# Success criteria:
+#   kubectl logs memoh-spike -c server | grep "containerd started"
+#   (or equivalent startup message indicating containerd initialized)
+#
+# Failure modes to investigate:
+#   - "failed to start containerd" → nested containerd conflict with Talos
+#   - permission denied → Talos seccomp/AppArmor blocking syscalls
+#   - OOMKilled → resource limits too low
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: memoh-spike
+  namespace: ai
+  labels:
+    app: memoh-spike
+spec:
+  hostPID: true
+  restartPolicy: Never
+  initContainers:
+    - name: wait-for-config
+      image: busybox:1.36
+      command:
+        - sh
+        - -c
+        - |
+          cat > /config/config.toml << 'EOF'
+          [server]
+          host = "0.0.0.0"
+          port = 8080
+
+          [database]
+          driver = "sqlite"
+          dsn = "/data/memoh.db"
+
+          [memory]
+          mode = "Off"
+          EOF
+          echo "Config written"
+      volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: data
+          mountPath: /data
+  containers:
+    - name: server
+      image: memohai/server:latest
+      securityContext:
+        privileged: true
+      env:
+        - name: MEMOH_CONFIG
+          value: /config/config.toml
+      volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: data
+          mountPath: /data
+        - name: containerd-state
+          mountPath: /var/lib/containerd
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          cpu: "2"
+          memory: 2Gi
+  volumes:
+    - name: config
+      emptyDir: {}
+    - name: data
+      emptyDir: {}
+    - name: containerd-state
+      emptyDir: {}
