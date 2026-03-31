@@ -11,7 +11,7 @@ data:
       "server": {
         "host": "0.0.0.0",
         "port": 1933,
-        "root_api_key": "${OPENVIKING_ROOT_API_KEY}"
+        "root_api_key": "$${OPENVIKING_ROOT_API_KEY}"
       },
       "storage": {
         "workspace": "/data/workspace",
@@ -26,7 +26,7 @@ data:
         "dense": {
           "provider": "openai",
           "model": "Qwen3-Embedding-4B-mxfp8",
-          "api_key": "${OPENVIKING_EMBEDDING_API_KEY}",
+          "api_key": "$${OPENVIKING_EMBEDDING_API_KEY}",
           "api_base": "http://omlx-llm.ai.svc.cluster.local:12306/v1",
           "dimension": 2560
         }
@@ -34,7 +34,7 @@ data:
       "vlm": {
         "provider": "openai",
         "model": "Qwen3-VL-8B-Instruct-MLX-4bit",
-        "api_key": "${OPENVIKING_VLM_API_KEY}",
+        "api_key": "$${OPENVIKING_VLM_API_KEY}",
         "api_base": "http://omlx-llm.ai.svc.cluster.local:12306/v1"
       }
     }
