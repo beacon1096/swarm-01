@@ -2,23 +2,39 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: openviking-config
+  name: openviking-config-template
 data:
-  ov.conf: |
-    [llm]
-    provider = "litellm"
-    model = "openai/gpt-4o"
-    api_key_env = "OPENVIKING_VLM_API_KEY"
-
-    [embedding]
-    provider = "openai"
-    model = "text-embedding-3-small"
-    api_key_env = "OPENVIKING_EMBEDDING_API_KEY"
-
-    [storage]
-    workspace = "/data/workspace"
-    backend = "localfs"
-
-    [server]
-    host = "0.0.0.0"
-    port = 1933
+  gen-config.sh: |
+    #!/bin/sh
+    cat > /config/ov.conf << JSONEOF
+    {
+      "server": {
+        "host": "0.0.0.0",
+        "port": 1933
+      },
+      "storage": {
+        "workspace": "/data/workspace",
+        "vectordb": {
+          "backend": "local"
+        },
+        "agfs": {
+          "backend": "local"
+        }
+      },
+      "embedding": {
+        "dense": {
+          "provider": "openai",
+          "model": "text-embedding-3-small",
+          "api_key": "${OPENVIKING_EMBEDDING_API_KEY}",
+          "api_base": "http://omlx-llm.ai.svc.cluster.local:12306/v1",
+          "dimension": 1536
+        }
+      },
+      "vlm": {
+        "provider": "openai",
+        "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+        "api_key": "${OPENVIKING_VLM_API_KEY}",
+        "api_base": "http://omlx-llm.ai.svc.cluster.local:12306/v1"
+      }
+    }
+    JSONEOF

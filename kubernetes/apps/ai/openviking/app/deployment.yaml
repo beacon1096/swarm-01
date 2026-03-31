@@ -17,15 +17,11 @@ spec:
       labels:
         app: openviking
     spec:
-      containers:
-        - name: openviking
-          image: ghcr.io/volcengine/openviking:main
-          ports:
-            - containerPort: 1933
-              name: http
+      initContainers:
+        - name: config-gen
+          image: busybox:1.36
+          command: ["/bin/sh", "/scripts/gen-config.sh"]
           env:
-            - name: OPENVIKING_CONFIG_FILE
-              value: /config/ov.conf
             - name: OPENVIKING_VLM_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -37,9 +33,22 @@ spec:
                   name: cluster-secrets
                   key: ZEROCLAW_API_KEY
           volumeMounts:
-            - name: config
-              mountPath: /config/ov.conf
-              subPath: ov.conf
+            - name: scripts
+              mountPath: /scripts
+            - name: config-gen
+              mountPath: /config
+      containers:
+        - name: openviking
+          image: ghcr.io/volcengine/openviking:main
+          ports:
+            - containerPort: 1933
+              name: http
+          env:
+            - name: OPENVIKING_CONFIG_FILE
+              value: /config/ov.conf
+          volumeMounts:
+            - name: config-gen
+              mountPath: /config
             - name: data
               mountPath: /data
           livenessProbe:
@@ -62,9 +71,12 @@ spec:
               cpu: "1"
               memory: 1Gi
       volumes:
-        - name: config
+        - name: scripts
           configMap:
-            name: openviking-config
+            name: openviking-config-template
+            defaultMode: 0755
+        - name: config-gen
+          emptyDir: {}
         - name: data
           persistentVolumeClaim:
             claimName: openviking-data
