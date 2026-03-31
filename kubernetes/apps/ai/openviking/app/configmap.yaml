@@ -24,15 +24,15 @@ data:
       "embedding": {
         "dense": {
           "provider": "openai",
-          "model": "text-embedding-3-small",
+          "model": "Qwen3-Embedding-4B-mxfp8",
           "api_key": "${OPENVIKING_EMBEDDING_API_KEY}",
           "api_base": "http://omlx-llm.ai.svc.cluster.local:12306/v1",
-          "dimension": 1536
+          "dimension": 2560
         }
       },
       "vlm": {
         "provider": "openai",
-        "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+        "model": "Qwen3-VL-8B-Instruct-MLX-4bit",
         "api_key": "${OPENVIKING_VLM_API_KEY}",
         "api_base": "http://omlx-llm.ai.svc.cluster.local:12306/v1"
       }
