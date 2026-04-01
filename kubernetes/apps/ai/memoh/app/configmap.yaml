@@ -16,11 +16,11 @@ data:
 
     [admin]
     username = "admin"
-    password = "${MEMOH_ADMIN_PASSWORD}"
+    password = "$${MEMOH_ADMIN_PASSWORD}"
     email = "admin@memoh.local"
 
     [auth]
-    jwt_secret = "${MEMOH_JWT_SECRET}"
+    jwt_secret = "$${MEMOH_JWT_SECRET}"
     jwt_expires_in = "168h"
     timezone = "Asia/Shanghai"
 
@@ -38,7 +38,7 @@ data:
     host = "memoh-postgres"
     port = 5432
     user = "memoh"
-    password = "${MEMOH_DB_PASSWORD}"
+    password = "$${MEMOH_DB_PASSWORD}"
     database = "memoh"
     sslmode = "disable"
 
