@@ -3,7 +3,7 @@
 Bitwarden-compatible password manager.
 
 - **Namespace:** identity
-- **Clusters:** Talos I, Talos II
+- **Clusters:** Talos II only
 - **Domain:** `vault.${SECRET_DOMAIN}`
 - **Chart:** vaultwarden v0.35.1
 - **Storage:** 5Gi

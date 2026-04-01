@@ -1,6 +1,6 @@
 # talos-ii/
 
-Talos II cluster configuration — a secondary 3-node control-plane cluster running on MS-01 hardware, provisioned as VMs on Harvester HCI.
+Talos II cluster configuration for the main production workload cluster on MS-01 hardware, provisioned as VMs on Harvester HCI.
 
 ## Nodes
 
@@ -29,7 +29,7 @@ patches/
   controller/               Controller-node-specific patches
   global/                   Global patches applied to all nodes
     machine-files.yaml      Extra machine files
-    machine-registries.yaml Container registry mirrors (via Zot on Talos I)
+    machine-registries.yaml Container registry mirrors (via Zot)
     machine-sysctls.yaml    Kernel parameters
     machine-kubelet.yaml    Kubelet configuration
     machine-network.yaml    Network configuration
@@ -38,11 +38,15 @@ patches/
 
 ## Relationship to Talos I
 
-Talos II shares the same application manifests (`kubernetes/apps/`) as the Talos I cluster. The Flux parent Kustomization at `kubernetes/flux/talos-ii/ks.yaml` controls what runs on this cluster:
+Talos II shares the same application manifests (`kubernetes/apps/`) as Talos I. The Flux parent Kustomization at `kubernetes/flux/talos-ii/ks.yaml` controls placement for this cluster.
 
-**Active services** (24): cert-manager, atuin, coder, forgejo, flux-instance, flux-operator, authentik, vaultwarden, cilium, harvester-csi-driver, metrics-server, reloader, spegel, cloudflare-dns, cloudflare-tunnel, envoy-gateway, k8s-gateway, sing-box, tailscale, attic, zot, home-assistant, immich, navidrome
+Current role:
 
-**Suspended services** (12): eliza, mem0, coredns, echo, forgejo-runner, matrix, mattermost, uptime-kuma, victoria-logs, victoria-logs-collector, victoria-metrics
+- production workloads
+- AI services
+- collaboration/identity services
+- most development apps
+- network ingress/egress components
 
 ## Cluster-specific overrides (via Flux patches)
 
@@ -52,7 +56,7 @@ Talos II shares the same application manifests (`kubernetes/apps/`) as the Talos
 - k8s-gateway IP: `10.20.0.202`
 - Zot registry LB IP: `10.20.0.203`
 - Spegel mirrors to local Zot (`http://10.20.0.203:5000`)
-- Container images routed through `registry.beaco.works` (local Zot)
+- Container images routed through `registry.beaco.works`
 - Harvester CSI uses Talos II-specific config (`kubernetes/apps/kube-system/harvester-csi-driver/talos-ii/`)
 - Envoy Gateway skips CRD install (Gateway API pre-installed)
 - Bitnami PostgreSQL images overridden to avoid digest-pinned pull issues

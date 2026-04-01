@@ -4,12 +4,15 @@ Homelab multi-cluster Kubernetes setup managed by Flux, running on Talos Linux w
 
 ## Clusters
 
-| Cluster | Nodes | Hardware | K8s Version | CSI | Notes |
-|---------|-------|----------|-------------|-----|-------|
-| **Talos I** (NEC8) | virt-01/02/03 | NEC mini PCs | 1.35.2 | Harvester | Primary cluster, all services |
-| **Talos II** (MS-01) | talos-ii-01/02/03 | MS-01 | 1.35.2 | Harvester | Secondary cluster, infra-only subset |
+| Cluster | Nodes | Hardware | K8s Version | CSI | Current role |
+|---------|-------|----------|-------------|-----|--------------|
+| **Talos I** (NEC8) | virt-01/02/03 | NEC mini PCs | 1.35.2 | Harvester | Observability + CI Runner cluster |
+| **Talos II** (MS-01) | talos-ii-01/02/03 | MS-01 | 1.35.2 | Harvester | Production workloads + AI + collaboration + CI/CD |
 
-Both clusters share the same Git repo and app manifests (`kubernetes/apps/`). Talos II selectively suspends non-essential services via Flux Kustomization patches.
+Both clusters share the same Git repo and app manifests (`kubernetes/apps/`). Runtime placement is controlled by Flux suspension patches in:
+
+- `kubernetes/flux/talos-i/ks.yaml`
+- `kubernetes/flux/talos-ii/ks.yaml`
 
 ## Repository Structure
 
@@ -20,55 +23,21 @@ kubernetes/
   apps/             Application manifests (Flux discovers subdirs automatically)
   components/       Shared components (e.g. SOPS decryption)
   flux/
-    talos-i/        Talos I (NEC8) cluster Flux config (ks.yaml)
-    talos-ii/       Talos II (MS-01) cluster Flux config (ks.yaml with suspension patches)
+    talos-i/        Talos I cluster Flux config (suspends Talos II-only workloads)
+    talos-ii/       Talos II cluster Flux config (suspends Talos I-only workloads)
 scripts/            Bootstrap and image build scripts
-talos-i/            Talos I (NEC8) node configurations
-talos-ii/           Talos II (MS-01) cluster config (talconfig, harvester provisioning, patches)
+talos-i/            Talos I node configurations
+talos-ii/           Talos II cluster config (talconfig, harvester provisioning, patches)
 ```
 
-## Service Inventory
+## Service Inventory (from current Flux placement)
 
-> **Legend**: Talos I = primary cluster (NEC8), Talos II = secondary cluster (MS-01)
-> Suspended services on Talos II are marked with `--`.
+| Cluster | Active services |
+|---------|------------------|
+| **Talos I** | observability stack (`victoria-metrics`, `victoria-logs`, `victoria-logs-collector`, `uptime-kuma`), `forgejo-runner`, plus shared infra components |
+| **Talos II** | AI (`eliza`, `mem0`), collaboration (`matrix`), identity (`authentik`, `vaultwarden`), development (`atuin`, `coder`, `forgejo`, `n8n`), home/media (`home-assistant`, `immich`, `navidrome`), registry (`zot`), nix (`attic`), network apps, plus shared infra components |
 
-| Namespace | Service | Talos I | Talos II | Domain | Description |
-|-----------|---------|:----:|:--------:|--------|-------------|
-| **ai** | Eliza | yes | -- | -- | ElizaOS agent, Matrix bot |
-| **ai** | Mem0 | yes | -- | -- | Memory API for agents |
-| **cert-manager** | cert-manager | yes | yes | -- | TLS certificate management |
-| **collaboration** | Matrix (Synapse) | yes | -- | matrix.* | Matrix homeserver |
-| **default** | echo | yes | -- | echo.* | Test/health-check endpoint |
-| **development** | Atuin | yes | yes | -- | Shell history sync |
-| **development** | Coder | yes | yes | code.* | Cloud dev environments, OIDC via Authentik |
-| **development** | Forgejo | -- | yes | forgejo.* | Git forge, mirroring, OIDC via Authentik |
-| **development** | Forgejo Runner | yes | -- | -- | CI runner for Forgejo (connects via public URL) |
-| **development** | n8n | -- | yes | automaton.* | Workflow automation, PostgreSQL-backed |
-| **flux-system** | flux-instance | yes | yes | -- | Flux GitOps instance |
-| **flux-system** | flux-operator | yes | yes | -- | Flux operator |
-| **identity** | Authentik | yes | yes | id.* | OIDC/SSO provider |
-| **identity** | Vaultwarden | yes | yes | vault.* | Password manager |
-| **kube-system** | Cilium | yes | yes | -- | CNI |
-| **kube-system** | CoreDNS | yes | -- | -- | Cluster DNS |
-| **kube-system** | Harvester CSI | yes | yes | -- | Persistent storage (separate config per cluster) |
-| **kube-system** | metrics-server | yes | yes | -- | Resource metrics |
-| **kube-system** | Reloader | yes | yes | -- | ConfigMap/Secret change watcher |
-| **kube-system** | Spegel | yes | yes | -- | In-cluster image registry mirror |
-| **network** | Cloudflare DNS | yes | yes | -- | External DNS via Cloudflare |
-| **network** | Cloudflare Tunnel | yes | yes | -- | Ingress via Cloudflare Tunnel |
-| **network** | Envoy Gateway | yes | yes | -- | Ingress gateway |
-| **network** | k8s-gateway | yes | yes | -- | Internal DNS for services |
-| **network** | sing-box | yes | yes | -- | Proxy |
-| **network** | Tailscale | yes | yes | -- | VPN mesh |
-| **nix** | Attic | yes | yes | nix.* | Nix binary cache |
-| **observability** | Uptime Kuma | yes | -- | -- | Uptime monitoring |
-| **observability** | Victoria Logs | yes | -- | -- | Log aggregation |
-| **observability** | Victoria Logs Collector | yes | -- | -- | Log collector |
-| **observability** | Victoria Metrics | yes | -- | -- | Metrics storage |
-| **home** | Home Assistant | -- | yes | Tailscale | Home automation |
-| **media** | Immich | -- | yes | Tailscale | Photo/video management |
-| **media** | Navidrome | -- | yes | Tailscale | Music streaming (Subsonic API) |
-| **registry** | Zot | -- | yes | registry.* / Tailscale | OCI registry, pull-through cache |
+> Do not hardcode real domains in docs/manifests. Use placeholders such as `service.${SECRET_DOMAIN}`.
 
 ## Key Technologies
 
