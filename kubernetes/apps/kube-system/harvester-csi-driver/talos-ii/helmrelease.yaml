@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: harvester-csi-driver
-      version: 0.1.25
+      version: 0.1.28
       sourceRef:
         kind: HelmRepository
         name: harvester-charts
