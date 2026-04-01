@@ -91,16 +91,14 @@ spec:
             - name: containerd-state
               mountPath: /var/lib/containerd
           livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
+            exec:
+              command: ["sh", "-c", "wget -q -S --method=HEAD -O/dev/null http://localhost:8080/health 2>&1 | grep -E '200|204|301'"]
             initialDelaySeconds: 60
             periodSeconds: 15
             failureThreshold: 5
           readinessProbe:
-            httpGet:
-              path: /health
-              port: 8080
+            exec:
+              command: ["sh", "-c", "wget -q -S --method=HEAD -O/dev/null http://localhost:8080/health 2>&1 | grep -E '200|204|301'"]
             initialDelaySeconds: 30
             periodSeconds: 10
           resources:
