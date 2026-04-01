@@ -1,6 +1,6 @@
 # talos-i/
 
-Talos I cluster (NEC8) node configurations — the primary 3-node control-plane cluster running on NEC mini PCs with Harvester HCI.
+Talos I cluster (NEC8) node configurations. Current role is **observability + CI/CD runner**, with shared cluster infrastructure.
 
 ## Nodes
 
@@ -22,4 +22,10 @@ patches/                Node patches (if any)
 
 ## Flux Config
 
-The Flux parent Kustomization for this cluster is at `kubernetes/flux/talos-i/ks.yaml`. All services in `kubernetes/apps/` are active (no suspensions).
+The Flux parent Kustomization for this cluster is at `kubernetes/flux/talos-i/ks.yaml`.
+
+This cluster intentionally **suspends Talos II-owned workloads** (such as AI/collaboration/identity/media/home/registry apps) and keeps:
+
+- observability apps
+- `development/forgejo-runner`
+- shared infra components

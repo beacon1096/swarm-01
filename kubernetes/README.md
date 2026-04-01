@@ -12,8 +12,8 @@ apps/                 Application manifests, organized by namespace
       app/            HelmRelease, configs, secrets, HTTPRoutes
 components/           Shared Kustomize components (e.g. SOPS provider)
 flux/
-  talos-i/ks.yaml     Talos I (NEC8) parent Kustomization (all apps active)
-  talos-ii/ks.yaml    Talos II (MS-01) parent Kustomization (suspends non-essential apps)
+  talos-i/ks.yaml     Talos I parent Kustomization (observability + CI-runner + shared infra)
+  talos-ii/ks.yaml    Talos II parent Kustomization (production/AI/collab + shared infra)
 ```
 
 ## How it works
@@ -24,10 +24,12 @@ flux/
   - SOPS decryption
   - HelmRelease install/upgrade strategies
   - `postBuild.substituteFrom: cluster-secrets` for variable substitution
-- Talos II's parent Kustomization additionally:
-  - Overrides cluster-specific variables (pod CIDR, gateway IPs, registry mirrors)
-  - Suspends services not needed on the secondary cluster
-  - Points Harvester CSI to a separate config path
+- Cluster placement is decided by per-cluster `spec.suspend` patches. Always treat `flux/talos-i/ks.yaml` and `flux/talos-ii/ks.yaml` as the source of truth.
+
+## Placement summary (current intent)
+
+- **Talos I:** observability namespace apps + `development/forgejo-runner` + shared infrastructure apps.
+- **Talos II:** AI, collaboration, identity, most development apps, home/media, registry, nix, network apps + shared infrastructure apps.
 
 ## Apps by Namespace
 
@@ -58,7 +60,8 @@ flux/
 | atuin | Shell history sync server |
 | coder | Cloud development environments (OIDC via Authentik) |
 | forgejo | Git forge with mirroring (OIDC via Authentik) |
-| forgejo-runner | CI runner for Forgejo (deferred, needs rootless config) |
+| forgejo-runner | CI runner for Forgejo |
+| n8n | Workflow automation service |
 
 ### flux-system
 | App | Description |
@@ -95,13 +98,13 @@ flux/
 ### home
 | App | Description |
 |-----|-------------|
-| home-assistant | Home automation platform. Talos II only, Tailscale access |
+| home-assistant | Home automation platform |
 
 ### media
 | App | Description |
 |-----|-------------|
-| immich | Self-hosted photo/video management (pgvecto.rs + Redis + ML). Talos II only, Tailscale access |
-| navidrome | Music streaming server with Subsonic API. Talos II only, Tailscale access |
+| immich | Self-hosted photo/video management (pgvecto.rs + Redis + ML) |
+| navidrome | Music streaming server with Subsonic API |
 
 ### nix
 | App | Description |
@@ -119,4 +122,4 @@ flux/
 ### registry
 | App | Description |
 |-----|-------------|
-| zot | OCI registry with pull-through cache (docker.io, ghcr.io, k8s.io, quay.io). Talos II only, exposed to Talos I via Tailscale |
+| zot | OCI registry with pull-through cache (docker.io, ghcr.io, k8s.io, quay.io) |

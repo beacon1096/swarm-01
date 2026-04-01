@@ -31,6 +31,9 @@
   - 根目录 README.md：整体架构和快速开始
   - `kubernetes/apps/*/README.md`：服务说明和配置
   - `bootstrap/README.md`：部署流程
+- **凡是涉及服务启停、迁移、切换集群，必须同步更新对应 README（禁止只改清单不改文档）**
+- **必须明确写清服务部署集群（talos-i / talos-ii），并与 `kubernetes/flux/talos-i/ks.yaml`、`kubernetes/flux/talos-ii/ks.yaml` 的 suspend 状态保持一致**
+- 提交前自检：至少核对 `README.md`、`kubernetes/README.md`、对应 `kubernetes/apps/<namespace>/<app>/README.md`
 
 ### 域名配置规范
 - **禁止在清单、文档或注释中写入硬编码的完整域名**
