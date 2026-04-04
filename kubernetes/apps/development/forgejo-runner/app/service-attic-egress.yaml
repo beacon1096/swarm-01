@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: attic-ts
+  annotations:
+    tailscale.com/tailnet-fqdn: "attic.tail5d550.ts.net"
+spec:
+  type: ExternalName
+  externalName: placeholder
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP

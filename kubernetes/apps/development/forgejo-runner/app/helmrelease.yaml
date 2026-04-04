@@ -32,8 +32,8 @@ spec:
               HTTPS_PROXY: "http://sing-box.network.svc.cluster.local:7890"
               http_proxy: "http://sing-box.network.svc.cluster.local:7890"
               https_proxy: "http://sing-box.network.svc.cluster.local:7890"
-              NO_PROXY: ".beaco.works,.beacoworks.xyz,.svc,.svc.cluster.local,.cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,127.0.0.1"
-              no_proxy: ".beaco.works,.beacoworks.xyz,.svc,.svc.cluster.local,.cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,127.0.0.1"
+              NO_PROXY: ".beaco.works,.beacoworks.xyz,.tail5d550.ts.net,.svc,.svc.cluster.local,.cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,127.0.0.1"
+              no_proxy: ".beaco.works,.beacoworks.xyz,.tail5d550.ts.net,.svc,.svc.cluster.local,.cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,127.0.0.1"
               GOPROXY: "https://goproxy.cn,https://proxy.golang.org,direct"
     kubectl:
       image:

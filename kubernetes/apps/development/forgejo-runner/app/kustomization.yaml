@@ -5,3 +5,5 @@ resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
   - ./secret.sops.yaml
+  - ./service-zot-egress.yaml
+  - ./service-attic-egress.yaml
