@@ -14,7 +14,7 @@
 **定位：** 生产工作负载、AI 服务、协作工具、CI/CD
 
 **运行服务：**
-- ai/* (zeroclaw, mem0, eliza)
+- ai/* (zeroclaw-kether, zeroclaw-chokmah, zeroclaw-binah, zeroclaw-yesod, zeroclaw-malkuth, mem0)
 - collaboration/* (matrix-synapse)
 - identity/* (authentik, vaultwarden)
 - development/* (coder, atuin, forgejo, n8n)
@@ -47,12 +47,10 @@
 
 ### 服务依赖关系
 ```
-zeroclaw → matrix-synapse (collaboration namespace)
-zeroclaw → mem0 (ai namespace)
-eliza → matrix-synapse
-eliza → mem0
+zeroclaw-* → matrix-synapse (collaboration namespace)
+zeroclaw-* → mem0 (ai namespace, via MCP)
 ```
-zeroclaw 和 eliza 需要通过 Kubernetes 内部服务地址连接 matrix 和 mem0，因此必须部署在同一集群。
+所有 zeroclaw agent 需要通过 Kubernetes 内部服务地址连接 matrix 和 mem0，因此必须部署在同一集群。
 
 ### 集群访问
 - talos-i: `kubectl --kubeconfig kubeconfig ...`
@@ -83,7 +81,7 @@ zeroclaw 和 eliza 需要通过 Kubernetes 内部服务地址连接 matrix 和 m
 - [x] home-assistant
 - [x] immich
 - [x] navidrome
-- [x] zeroclaw (已连接 matrix)
+- [x] zeroclaw-* (Sephiroth agents, v0.6.5)
 - [x] forgejo (CI/CD artifact 存储需求)
 
 ### 需保留在 talos-i ✅
