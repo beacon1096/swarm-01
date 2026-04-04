@@ -22,6 +22,7 @@ spec:
         existingInitSecret: "forgejo-runner-secret"
         file:
           runner:
+            capacity: 3
             labels:
               - "ubuntu-latest:docker://node:20.12-bookworm"
               - "nix-builder:docker://nixos/nix:latest"
