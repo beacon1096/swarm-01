@@ -24,7 +24,7 @@ nodes:
       transport: "virtio"
     machineSpec:
       secureboot: true
-    talosImageURL: factory.talos.dev/installer-secureboot/17bd088c71807ae797c16e85efb133b27814f1a333312bf597c3d4bc6f7c13d7
+    talosImageURL: factory.talos.dev/installer-secureboot/7d4c31cbd96db9f90c874990697c523482b2bae27fb4631d5583dcd9c281b1ff
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -44,7 +44,7 @@ nodes:
       transport: "virtio"
     machineSpec:
       secureboot: true
-    talosImageURL: factory.talos.dev/installer-secureboot/17bd088c71807ae797c16e85efb133b27814f1a333312bf597c3d4bc6f7c13d7
+    talosImageURL: factory.talos.dev/installer-secureboot/7d4c31cbd96db9f90c874990697c523482b2bae27fb4631d5583dcd9c281b1ff
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -64,7 +64,7 @@ nodes:
       transport: "virtio"
     machineSpec:
       secureboot: true
-    talosImageURL: factory.talos.dev/installer-secureboot/17bd088c71807ae797c16e85efb133b27814f1a333312bf597c3d4bc6f7c13d7
+    talosImageURL: factory.talos.dev/installer-secureboot/7d4c31cbd96db9f90c874990697c523482b2bae27fb4631d5583dcd9c281b1ff
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -87,6 +87,7 @@ patches:
   - "@./patches/global/machine-sysctls.yaml"
   - "@./patches/global/machine-time.yaml"
   - "@./patches/global/machine-registries.yaml"
+  - "@./patches/global/machine-tailscale.yaml"
 
 # Controller patches
 controlPlane:
