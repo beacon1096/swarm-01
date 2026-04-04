@@ -1,14 +1,24 @@
 ---
+# Routes to attic via node-level tailscale (direct connection)
+# instead of tailscale operator egress proxy (which relays via DERP)
 apiVersion: v1
 kind: Service
 metadata:
   name: attic-ts
-  annotations:
-    tailscale.com/tailnet-fqdn: "attic.tail5d550.ts.net"
 spec:
-  type: ExternalName
-  externalName: placeholder
+  clusterIP: None
   ports:
     - name: http
       port: 8080
       protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: attic-ts
+subsets:
+  - addresses:
+      - ip: 100.67.28.105
+    ports:
+      - name: http
+        port: 8080
