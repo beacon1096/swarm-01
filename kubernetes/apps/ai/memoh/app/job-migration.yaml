@@ -13,7 +13,7 @@ spec:
       restartPolicy: OnFailure
       initContainers:
         - name: config-gen
-          image: busybox:1.36
+          image: busybox:1.37
           command: ["/bin/sh", "/scripts/gen-config.sh"]
           env:
             - name: MEMOH_DB_PASSWORD
@@ -37,7 +37,7 @@ spec:
             - name: config
               mountPath: /config
         - name: wait-postgres
-          image: busybox:1.36
+          image: busybox:1.37
           command:
             - sh
             - -c
