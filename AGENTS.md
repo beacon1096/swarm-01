@@ -57,6 +57,25 @@ zeroclaw-* → mem0 (ai namespace, via MCP)
 - talos-ii: `kubectl --server=https://100.115.149.55:6443 --kubeconfig=talos-ii/clusterconfig/kubeconfig --insecure-skip-tls-verify ...`
   - 注意：Tailscale IP 不在 API Server 证书 SAN 中，需要 `--insecure-skip-tls-verify`
 
+### 本地访问凭据与入口
+- **原则：** 这里只记录本地凭据文件位置和使用方式，禁止把明文 token / secret 抄进文档、提交或评论里
+- **Talos I kubeconfig：** `kubeconfig`
+- **Talos II kubeconfig：** `talos-ii/clusterconfig/kubeconfig`
+- **Talos I talosconfig：** `talos-i/clusterconfig/talosconfig`
+- **Talos II talosconfig：** `talos-ii/clusterconfig/talosconfig`
+- **Harvester kubeconfig（Talos I 底层）：** `talos-i-hvst.yaml`
+- **Harvester kubeconfig（Talos II 底层）：** `talos-ii-hvst.yaml`
+- **Harvester 通用 kubeconfig：** `harvester_kubeconfig`
+- **Harvester 宿主机 SSH：** `ssh rancher@172.16.84.111` / `ssh rancher@172.16.84.112` / `ssh rancher@172.16.84.113`
+- **SOPS Age key：** `age.key`
+- **本地明文集群变量：** `cluster-secrets.yaml`
+- **Cloudflare Tunnel 本地凭据：** `cloudflare-tunnel.json`
+- **GitHub deploy key：** `github-deploy.key` / `github-deploy.key.pub`
+- **GitHub push token：** `github-push-token.txt`
+- **使用 `talosctl`：** `nix-shell -p talosctl`
+- **使用 `sops`：** `nix-shell -p sops --run "sops decrypt <secret.sops.yaml>"`
+- **注意：** 上述文件均视为本地运维凭据，默认不应改名、搬移、打印全文或提交到远端
+
 ### Flux 部署
 - 使用 `bootstrap/helmfile.d/` 进行初始部署
 - Flux Kustomization 通过 `kubernetes/apps/*/ks.yaml` 管理应用
@@ -78,6 +97,7 @@ zeroclaw-* → mem0 (ai namespace, via MCP)
 - [x] atuin
 - [x] attic
 - [x] zot
+- [x] n8n
 - [x] home-assistant
 - [x] immich
 - [x] navidrome
@@ -94,6 +114,7 @@ zeroclaw-* → mem0 (ai namespace, via MCP)
 - [ ] mem0 镜像需要推送到 zot registry
 - [ ] 修复 talos-ii-03 NotReady 节点 (ms01-c 节点故障)
 - [ ] matrix 旧数据迁移 (可选)
+- [ ] 评估 `attic-ts` / `zot-ts` 在节点级 Tailscale 扩展后是否仍需要保留
 
 ## 集群特定配置
 
