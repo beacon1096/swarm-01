@@ -7,4 +7,4 @@ spec:
   interval: 1h
   url: oci://codeberg.org/wrenix/helm-charts/forgejo-runner
   ref:
-    tag: 0.7.3
+    tag: 0.7.6
