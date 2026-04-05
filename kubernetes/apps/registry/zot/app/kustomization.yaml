@@ -5,5 +5,4 @@ resources:
   - ./secret.sops.yaml
   - ./helmrepository.yaml
   - ./helmrelease.yaml
-  - ./httproute.yaml
   - ./service-tailscale.yaml

@@ -5,5 +5,4 @@ resources:
   - ./secret.sops.yaml
   - ./helmrelease-postgresql.yaml
   - ./helmrelease.yaml
-  - ./httproute.yaml
   - ./service-tailscale.yaml
