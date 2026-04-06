@@ -37,6 +37,7 @@ spec:
         server:
           DOMAIN: forgejo.${SECRET_DOMAIN}
           ROOT_URL: https://forgejo.${SECRET_DOMAIN}
+          LOCAL_ROOT_URL: http://forgejo-ts.development.svc.cluster.local:3000
           SSH_DOMAIN: forgejo.${SECRET_DOMAIN}
           DISABLE_SSH: true
         actions:
@@ -50,6 +51,8 @@ spec:
         openid:
           ENABLE_OPENID_SIGNIN: true
           ENABLE_OPENID_SIGNUP: false
+        webhook:
+          ALLOWED_HOST_LIST: "*.svc.cluster.local"
         mirror:
           ENABLED: true
           DEFAULT_INTERVAL: 8h
