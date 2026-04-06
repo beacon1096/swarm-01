@@ -72,6 +72,11 @@ spec:
             ingress:
               - hostname: "forgejo.${SECRET_DOMAIN}"
                 service: http_status:404
+              - hostname: "status.${SECRET_DOMAIN}"
+                originRequest:
+                  http2Origin: true
+                  originServerName: external.${SECRET_DOMAIN}
+                service: https://172.16.107.31:443
               - hostname: "*.${SECRET_DOMAIN}"
                 originRequest:
                   http2Origin: true
