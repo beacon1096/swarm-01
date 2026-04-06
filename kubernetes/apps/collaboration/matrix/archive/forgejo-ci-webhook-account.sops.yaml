@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: forgejo-ci-webhook-account-archive
+  namespace: collaboration
+stringData:
+  note: ENC[AES256_GCM,data:diafoO5RZ/hmdRQCEml2tZqMl7xUJfMmTanMqNxVgv67FPcP7tErr/nR4LMkTGIPjTcAcVeG27zbdjydJ7sI08od6Q+uAkiizEsERNGFGvxEv4molFxqRoSnWiPwNdKVBQGt2FXF6tPJ3NHxIElaqtCtIMHIyQ9/u9vaoDDlCrQuxNPDo46NqwFKquxGTZK9hsfCT2rtGg==,iv:pRs8vIIGZohomevpK1cy+oztZ9zAlGurl7ZUFw9Zq7s=,tag:Q0LjZ9QqcUOpjvtLrS6dIQ==,type:str]
+  matrixUserId: ENC[AES256_GCM,data:mOJKynkqCmKlOIRTuF35NaG8FBUgaSSpYdGN8226gw==,iv:1wWLTffVgb0aKPLAeE9HLdKvLTiXTIeXmW9cPqLfqAY=,tag:KH6YJl50LddGBeFaWGBC7g==,type:str]
+  localpart: ENC[AES256_GCM,data:FbboAoFeenfTVjCPIPtcvm9f,iv:bAVDXmzGBc1KSjZXPCzI14PKQgIy5eg+0FJFNnJRalM=,tag:Lm8xgKMueEFnH8rMmzkdcQ==,type:str]
+  password: ENC[AES256_GCM,data:ycWuzciRHDyXDRqYu8Gau5jzLKyisOUYwVfFlmffi94=,iv:t0aCapF7aaryFqVxKVpFCbKzi6ljZtWuB4AuWU/a1Vs=,tag:BSrCgQ5+6KBeJNcKre8qZQ==,type:str]
+  accessToken: ENC[AES256_GCM,data:PEkkFr4NAyW2Ocdesl4eJ/8/nZdyG5JA02YkXzUfVC0kB/eRlQJqCXeMIiUbI842ERsMmtlsfRc=,iv:caLKsy5d3rD40d76grvTAq07SgJcDmZnoF8ZGOKgxCA=,tag:q5qzGLTnZfWeTEfcJbhUFQ==,type:str]
+  deviceId: ENC[AES256_GCM,data:P6UNhCS61sziqA==,iv:pGbR/2VZEOqNKJqLi21030Rpkt99c1HRLKyHc7Qeok4=,tag:GZ8G6kPRR/XH8WW7ZlaIxQ==,type:str]
+  messageTitle: ENC[AES256_GCM,data:xNRzNhfBC1yQwJaW9Q==,iv:pBOAviaKwcJ8GZUoMKkCpoiZvgImMJcsQyIGYJPdUQs=,tag:WBZ3rpZJq2swebpXaGoewg==,type:str]
+  destinationRooms: ENC[AES256_GCM,data:rwtSTLK/Oy2EAgD7ZaOpbPLI3hWZYQ/D0B9mzBRHXw==,iv:qYcy2AaYbDqN6BDTl6ZK4yAqrV1htb+G2VubAIVDj98=,tag:sGvrwYb+X8HbeF3G2bcSog==,type:str]
+sops:
+  age:
+    - recipient: age16axld0tr7u7rhkm0dfcj0elmw8lzqxsm8rykrdafrrk5dxt3g5equwm578
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBoNWtCTHgwbnRLNzM0TUhO
+        K0E2MnorQVVkMnVCZUtTU1hpT2IyYkJVTVJJCjRnR3JwbVlsUytCc3RqcVFWTmpL
+        QVhGeFZvWUhXMHJGQ3ZrcnZnYk13M2MKLS0tICtZWXEwZk9oOE5TYnFtWGtmSVlP
+        QlFobXpRVzFvaXltcEpCY2hnak5OOTgKZ//XRBWa6RHs6KRxf9qYcd28L5fWbeOv
+        J+a8VhYMbSo48AuQD1U69Czwb7IFID0Rq1JSVxU13jhmZUFxc0nivw==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2026-04-05T12:55:07Z"
+  mac: ENC[AES256_GCM,data:M+ItOBQh0cqceQKvL7eo2DuhQ1u0F0aNbDWNV8neLYLuBsR76ycpBkguVqtFmoiMgKjYs0aVhCvs2kt9L+yUIJamUYNU/zDuBhqkqITsRWCe+rFm5FHj5x607uOS1WAo+eborpWiEldnZXYJIqe0IRcE/hJ1F/BCUpnPIr3JYgQ=,iv:SAiafySWIbVHCCCc9bGXkMKrCYufB7LZiFWgLNvsB0o=,tag:hBJVicmOzI7QtwGd2JXHSw==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.12.1

@@ -30,6 +30,7 @@ flux/
 
 - **Talos I:** observability namespace apps + `development/forgejo-runner` + shared infrastructure apps.
 - **Talos II:** AI, collaboration, identity, most development apps, home/media, registry, nix, network apps + shared infrastructure apps.
+- `development/forgejo` remains Talos II-only, while `development/forgejo-runner` remains Talos I-only and reaches Forgejo through the internal `forgejo-ts.development.svc.cluster.local:3000` Tailscale egress path instead of the public `forgejo.${SECRET_DOMAIN}` entrypoint.
 
 ## Apps by Namespace
 

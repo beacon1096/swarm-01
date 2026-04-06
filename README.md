@@ -39,6 +39,8 @@ talos-ii/           Talos II cluster config (talconfig, harvester provisioning, 
 
 > Do not hardcode real domains in docs/manifests. Use placeholders such as `service.${SECRET_DOMAIN}`.
 
+Forgejo's public web URL stays at `https://forgejo.${SECRET_DOMAIN}` on Talos II, while the Talos I `forgejo-runner` uses the internal `forgejo-ts.development.svc.cluster.local:3000` Tailscale egress service for cluster-to-cluster access.
+
 ## Key Technologies
 
 - **OS**: [Talos Linux](https://talos.dev)
