@@ -28,6 +28,8 @@ spec:
               - "nix-builder:docker://nixos/nix:latest"
           container:
             network: host
+            valid_volumes: []
+            options: "-v /workspace"
             envs:
               HTTP_PROXY: "http://sing-box.network.svc.cluster.local:7890"
               HTTPS_PROXY: "http://sing-box.network.svc.cluster.local:7890"

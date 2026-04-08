@@ -39,7 +39,9 @@ spec:
           ROOT_URL: https://forgejo.${SECRET_DOMAIN}
           LOCAL_ROOT_URL: http://forgejo-ts.development.svc.cluster.local:3000
           SSH_DOMAIN: forgejo.${SECRET_DOMAIN}
-          DISABLE_SSH: true
+          DISABLE_SSH: false
+          SSH_PORT: 22
+          START_SSH_SERVER: true
         actions:
           ENABLED: true
         database:
