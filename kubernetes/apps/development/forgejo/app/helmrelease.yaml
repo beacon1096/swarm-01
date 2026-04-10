@@ -44,6 +44,7 @@ spec:
           START_SSH_SERVER: true
         actions:
           ENABLED: true
+          ENDLESS_TASK_TIMEOUT: 12h
         database:
           SQLITE_JOURNAL_MODE: WAL
         service:
