@@ -9,8 +9,8 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: zot
-    release: zot
+    app.kubernetes.io/instance: zot
+    app.kubernetes.io/name: zot
   ports:
     - name: http
       port: 5000
