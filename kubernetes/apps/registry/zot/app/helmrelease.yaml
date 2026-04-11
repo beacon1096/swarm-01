@@ -80,6 +80,11 @@ spec:
                   "urls": ["https://docker.elastic.co"],
                   "content": [{ "prefix": "**", "destination": "/elastic.co" }],
                   "onDemand": true, "tlsVerify": true
+                },
+                {
+                  "urls": ["https://code.forgejo.org"],
+                  "content": [{ "prefix": "**", "destination": "/code.forgejo.org" }],
+                  "onDemand": true, "tlsVerify": true
                 }
               ]
             },

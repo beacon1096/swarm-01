@@ -21,3 +21,7 @@ machine:
         endpoints:
           - https://registry.beaco.works/v2/elastic.co
           - https://docker.elastic.co
+      code.forgejo.org:
+        endpoints:
+          - http://zot.tail5d550.ts.net:5000/v2/code.forgejo.org
+          - https://code.forgejo.org

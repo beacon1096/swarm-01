@@ -29,3 +29,8 @@ This cluster intentionally **suspends Talos II-owned workloads** (such as AI/col
 - observability apps
 - `development/forgejo-runner`
 - shared infra components
+
+## Image Mirrors
+
+Talos I nodes use containerd registry mirrors from `patches/global/machine-registries.yaml`.
+For `code.forgejo.org`, Talos I pulls first through Zot over the Tailnet at `http://zot.tail5d550.ts.net:5000/v2/code.forgejo.org`, then falls back to the upstream registry.

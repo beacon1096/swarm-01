@@ -123,4 +123,4 @@ flux/
 ### registry
 | App | Description |
 |-----|-------------|
-| zot | OCI registry with pull-through cache (docker.io, ghcr.io, k8s.io, quay.io) |
+| zot | OCI registry with pull-through cache (docker.io, ghcr.io, k8s.io, quay.io, elastic.co, code.forgejo.org) |
