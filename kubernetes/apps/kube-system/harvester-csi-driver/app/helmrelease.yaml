@@ -12,6 +12,18 @@ spec:
         kind: HelmRepository
         name: harvester-charts
   interval: 1h
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: storage.k8s.io
+              version: v1
+              kind: StorageClass
+              name: harvester
+            patch: |
+              - op: replace
+                path: /volumeBindingMode
+                value: WaitForFirstConsumer
   values:
     cloudConfig:
       secretName: harvester-cloud-config
