@@ -6,8 +6,8 @@ Homelab multi-cluster Kubernetes setup managed by Flux, running on Talos Linux w
 
 | Cluster | Nodes | Hardware | K8s Version | CSI | Current role |
 |---------|-------|----------|-------------|-----|--------------|
-| **Talos I** (NEC8) | virt-01/02/03 | NEC mini PCs | 1.35.2 | Harvester | Observability + CI Runner cluster |
-| **Talos II** (MS-01) | talos-ii-01/02/03 | MS-01 | 1.35.2 | Harvester | Production workloads + AI + collaboration + CI/CD |
+| **Talos I** (NEC8) | virt-01/02/03 | NEC mini PCs | 1.35.3 | Harvester | Observability + CI Runner cluster |
+| **Talos II** (MS-01) | talos-ii-01/02/03 | MS-01 | 1.35.3 | Harvester | Production workloads + AI + collaboration + CI/CD |
 
 Both clusters share the same Git repo and app manifests (`kubernetes/apps/`). Runtime placement is controlled by Flux suspension patches in:
 
