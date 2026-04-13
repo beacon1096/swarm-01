@@ -76,6 +76,11 @@ spec:
           adminPasswordKey: pg-password
           userPasswordKey: pg-password
       primary:
+        args: []
+        configuration: ""
+        pgHbaConfiguration: ""
+        nodeSelector:
+          kubernetes.io/hostname: talos-ii-01
         persistence:
           enabled: true
           storageClass: harvester
@@ -89,3 +94,6 @@ spec:
       architecture: standalone
       auth:
         enabled: false
+      master:
+        nodeSelector:
+          kubernetes.io/hostname: talos-ii-01
