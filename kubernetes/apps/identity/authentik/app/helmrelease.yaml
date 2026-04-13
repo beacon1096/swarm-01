@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: authentik
-      version: 2025.8.4
+      version: 2025.10.3
       sourceRef:
         kind: HelmRepository
         name: authentik-charts
@@ -85,15 +85,3 @@ spec:
           enabled: true
           storageClass: harvester
           size: 8Gi
-    redis:
-      enabled: true
-      image:
-        registry: docker.io
-        repository: bitnami/redis
-        tag: latest
-      architecture: standalone
-      auth:
-        enabled: false
-      master:
-        nodeSelector:
-          kubernetes.io/hostname: talos-ii-01
