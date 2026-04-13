@@ -81,7 +81,7 @@ flux/
 |-----|-------------|
 | cilium | CNI networking |
 | coredns | Cluster DNS |
-| harvester-csi-driver | Persistent storage via Harvester HCI |
+| harvester-csi-driver | Persistent storage via Harvester HCI; guest `StorageClass/harvester` is GitOps-managed with `WaitForFirstConsumer` |
 | metrics-server | Resource metrics API |
 | reloader | Watches ConfigMap/Secret changes and triggers rollouts |
 | spegel | In-cluster P2P image registry mirror |

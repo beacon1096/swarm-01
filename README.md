@@ -48,4 +48,4 @@ Forgejo's public web URL stays at `https://forgejo.${SECRET_DOMAIN}` on Talos II
 - **CNI**: [Cilium](https://cilium.io)
 - **Ingress**: [Envoy Gateway](https://gateway.envoyproxy.io) + [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/)
 - **Secrets**: [SOPS](https://github.com/getsops/sops) + age encryption
-- **Storage**: Harvester CSI (backed by Harvester HCI Longhorn)
+- **Storage**: Harvester CSI (backed by Harvester HCI Longhorn), with guest `StorageClass/harvester` managed in GitOps and bound via `WaitForFirstConsumer`
