@@ -1,0 +1,57 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: talos-image-factory
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: talos-image-factory
+  interval: 1h
+  values:
+    replicaCount: 1
+    strategy:
+      type: Recreate
+    cacheSigningKey:
+      existingSecret: talos-image-factory-secret
+    envFrom:
+      - secretRef:
+          name: talos-image-factory-secret
+    config:
+      artifacts:
+        core:
+          registry: ghcr.io
+          components:
+            extensionManifest: beacon1096/extensions
+        refreshInterval: 5m
+        schematic:
+          registry: ghcr.io
+          namespace: beacon1096/image-factory
+          repository: schematics
+          insecure: false
+        installer:
+          internal:
+            registry: ghcr.io
+            namespace: beacon1096/image-factory
+            repository: installer
+            insecure: false
+      cache:
+        oci:
+          registry: ghcr.io
+          namespace: beacon1096/image-factory
+          repository: cache
+          insecure: false
+        signingKeyPath: /etc/image-factory/keys/cache-signing.key
+      containerSignature:
+        disabled: true
+      http:
+        httpListenAddr: 0.0.0.0:8080
+      build:
+        maxConcurrency: 2
+        minTalosVersion: 1.12.0
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 1Gi
