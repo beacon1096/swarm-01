@@ -8,4 +8,5 @@ components:
 
 resources:
   - ./namespace.yaml
+  - ./talos-image-factory/ks.yaml
   - ./zot/ks.yaml

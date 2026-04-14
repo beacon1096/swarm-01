@@ -58,7 +58,7 @@ spec:
     - # Talos I: suspend apps that only run on Talos II
       target:
         kind: Kustomization
-        name: "(zot|home-assistant|immich|navidrome|matrix|tigerfs|openviking|memoh|zeroclaw-.*|authentik|vaultwarden|coder|atuin|attic|forgejo|n8n)"
+        name: "(zot|talos-image-factory|home-assistant|immich|navidrome|matrix|tigerfs|openviking|memoh|zeroclaw-.*|authentik|vaultwarden|coder|atuin|attic|forgejo|n8n)"
       patch: |
         - op: add
           path: /spec/suspend
