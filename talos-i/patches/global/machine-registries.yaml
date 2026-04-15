@@ -3,25 +3,31 @@ machine:
     mirrors:
       docker.io:
         endpoints:
-          - https://registry.beaco.works/v2/docker.io
+          - url: https://registry.beaco.works/v2/docker.io
+            overridePath: true
           - https://registry-1.docker.io
       ghcr.io:
         endpoints:
-          - https://registry.beaco.works/v2/ghcr.io
+          - url: https://registry.beaco.works/v2/ghcr.io
+            overridePath: true
           - https://ghcr.io
       registry.k8s.io:
         endpoints:
-          - https://registry.beaco.works/v2/k8s.io
+          - url: https://registry.beaco.works/v2/k8s.io
+            overridePath: true
           - https://registry.k8s.io
       quay.io:
         endpoints:
-          - https://registry.beaco.works/v2/quay.io
+          - url: https://registry.beaco.works/v2/quay.io
+            overridePath: true
           - https://quay.io
       docker.elastic.co:
         endpoints:
-          - https://registry.beaco.works/v2/elastic.co
+          - url: https://registry.beaco.works/v2/elastic.co
+            overridePath: true
           - https://docker.elastic.co
       code.forgejo.org:
         endpoints:
-          - http://zot.tail5d550.ts.net:5000/v2/code.forgejo.org
+          - url: http://zot.tail5d550.ts.net:5000/v2/code.forgejo.org
+            overridePath: true
           - https://code.forgejo.org

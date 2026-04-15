@@ -3,23 +3,28 @@ machine:
     mirrors:
       docker.io:
         endpoints:
-          - http://10.20.0.203:5000/v2/docker.io
+          - url: http://10.20.0.203:5000/v2/docker.io
+            overridePath: true
           - https://registry-1.docker.io
       ghcr.io:
         endpoints:
-          - http://10.20.0.203:5000/v2/ghcr.io
+          - url: http://10.20.0.203:5000/v2/ghcr.io
+            overridePath: true
           - https://ghcr.io
       registry.k8s.io:
         endpoints:
-          - http://10.20.0.203:5000/v2/k8s.io
+          - url: http://10.20.0.203:5000/v2/k8s.io
+            overridePath: true
           - https://registry.k8s.io
       quay.io:
         endpoints:
-          - http://10.20.0.203:5000/v2/quay.io
+          - url: http://10.20.0.203:5000/v2/quay.io
+            overridePath: true
           - https://quay.io
       docker.elastic.co:
         endpoints:
-          - http://10.20.0.203:5000/v2/elastic.co
+          - url: http://10.20.0.203:5000/v2/elastic.co
+            overridePath: true
           - https://docker.elastic.co
       10.20.0.203:5000:
         endpoints:
