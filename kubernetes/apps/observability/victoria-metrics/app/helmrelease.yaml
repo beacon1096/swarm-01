@@ -14,6 +14,19 @@ spec:
       enabled: true
       operator:
         disable_prometheus_converter: false
+      env:
+        - name: VM_CONTAINERREGISTRY
+          value: registry.beaco.works/docker.io
+        - name: VM_VMSINGLEDEFAULT_IMAGE
+          value: registry.beaco.works/docker.io/victoriametrics/victoria-metrics
+        - name: VM_VMAGENTDEFAULT_IMAGE
+          value: registry.beaco.works/docker.io/victoriametrics/vmagent
+        - name: VM_VMALERTDEFAULT_IMAGE
+          value: registry.beaco.works/docker.io/victoriametrics/vmalert
+        - name: VM_CONFIG_RELOADER_IMAGE
+          value: registry.beaco.works/docker.io/victoriametrics/operator:config-reloader-v0.68.2
+        - name: VM_VMALERTMANAGER_ALERTMANAGERDEFAULTBASEIMAGE
+          value: registry.beaco.works/docker.io/prom/alertmanager
 
     # -- VMSingle: metrics storage (single binary, much lighter than Prometheus)
     vmsingle:
