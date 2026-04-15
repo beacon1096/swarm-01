@@ -24,8 +24,8 @@ nodes:
     installDiskSelector:
       transport: "virtio"
     machineSpec:
-      secureboot: true
-    talosImageURL: factory.talos.dev/installer-secureboot/7d4c31cbd96db9f90c874990697c523482b2bae27fb4631d5583dcd9c281b1ff
+      secureboot: false
+    talosImageURL: ghcr.io/beacon1096/image-factory/installer/installer/59ec945d479edcdcc22eaeac0460d4f3b6f12822ff910640212c5189a8b0463f
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -44,8 +44,8 @@ nodes:
     installDiskSelector:
       transport: "virtio"
     machineSpec:
-      secureboot: true
-    talosImageURL: factory.talos.dev/installer-secureboot/7d4c31cbd96db9f90c874990697c523482b2bae27fb4631d5583dcd9c281b1ff
+      secureboot: false
+    talosImageURL: ghcr.io/beacon1096/image-factory/installer/installer/59ec945d479edcdcc22eaeac0460d4f3b6f12822ff910640212c5189a8b0463f
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -64,8 +64,8 @@ nodes:
     installDiskSelector:
       transport: "virtio"
     machineSpec:
-      secureboot: true
-    talosImageURL: factory.talos.dev/installer-secureboot/7d4c31cbd96db9f90c874990697c523482b2bae27fb4631d5583dcd9c281b1ff
+      secureboot: false
+    talosImageURL: ghcr.io/beacon1096/image-factory/installer/installer/59ec945d479edcdcc22eaeac0460d4f3b6f12822ff910640212c5189a8b0463f
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -94,4 +94,3 @@ patches:
 controlPlane:
   patches:
     - "@./patches/controller/cluster.yaml"
-
