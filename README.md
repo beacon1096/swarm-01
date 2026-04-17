@@ -49,3 +49,8 @@ Forgejo's public web URL stays at `https://forgejo.${SECRET_DOMAIN}` on Talos II
 - **Ingress**: [Envoy Gateway](https://gateway.envoyproxy.io) + [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/)
 - **Secrets**: [SOPS](https://github.com/getsops/sops) + age encryption
 - **Storage**: Harvester CSI (backed by Harvester HCI Longhorn), with guest `StorageClass/harvester` managed in GitOps and bound via `WaitForFirstConsumer`
+
+## Talos II upgrade notes
+
+- Talos II now uses a self-hosted Image Factory plus a custom `util-linux-mountpoint` system extension to work around Harvester CSI `NodeUnstageVolume` failures on Talos guests.
+- The validated Talos `v1.12.6` upgrade path on Harvester/KubeVirt VMs required disabling Secure Boot, TPM, TPM persistence state, and EFI persistence state before rebooting each upgraded VM.
