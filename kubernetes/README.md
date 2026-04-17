@@ -39,6 +39,7 @@ flux/
 |-----|-------------|
 | eliza | ElizaOS agent with Matrix bot, PostgreSQL state, OpenAI-compat LLM |
 | mem0 | Memory API for agents |
+| tabby | Self-hosted Tabby server backed by a Harvester PVC and exposed through Tailscale |
 
 ### cert-manager
 | App | Description |

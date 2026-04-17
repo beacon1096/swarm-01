@@ -35,7 +35,7 @@ talos-ii/           Talos II cluster config (talconfig, harvester provisioning, 
 | Cluster | Active services |
 |---------|------------------|
 | **Talos I** | observability stack (`victoria-metrics`, `victoria-logs`, `victoria-logs-collector`, `uptime-kuma`), `forgejo-runner`, plus shared infra components |
-| **Talos II** | AI (`eliza`, `mem0`), collaboration (`matrix`), identity (`authentik`, `vaultwarden`), development (`atuin`, `coder`, `forgejo`, `n8n`), home/media (`home-assistant`, `immich`, `navidrome`), registry (`zot`), nix (`attic`), network apps, plus shared infra components |
+| **Talos II** | AI (`eliza`, `mem0`, `tabby`), collaboration (`matrix`), identity (`authentik`, `vaultwarden`), development (`atuin`, `coder`, `forgejo`, `n8n`), home/media (`home-assistant`, `immich`, `navidrome`), registry (`zot`), nix (`attic`), network apps, plus shared infra components |
 
 > Do not hardcode real domains in docs/manifests. Use placeholders such as `service.${SECRET_DOMAIN}`.
 

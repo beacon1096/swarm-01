@@ -1,0 +1,81 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tabby
+  labels:
+    app: tabby
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: tabby
+  template:
+    metadata:
+      labels:
+        app: tabby
+    spec:
+      containers:
+        - name: tabby
+          image: registry.tabbyml.com/tabbyml/tabby:0.31.2
+          args: ["serve", "--port", "80"]
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+            - name: TABBY_ROOT
+              value: /data
+            - name: TABBY_WEBSERVER_JWT_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: tabby-secret
+                  key: jwt-secret
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /data/config.toml
+              subPath: config.toml
+              readOnly: true
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: tabby-data
+        - name: config
+          secret:
+            secretName: tabby-secret
+            items:
+              - key: config.toml
+                path: config.toml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tabby-data
+  labels:
+    app: tabby
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: harvester
+  resources:
+    requests:
+      storage: 5Gi

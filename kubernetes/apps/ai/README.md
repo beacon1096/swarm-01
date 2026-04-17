@@ -9,6 +9,7 @@ This directory manages the applications and configurations for the `ai` namespac
 ### Infrastructure
 
 - **tigerfs**: PostgreSQL instance retained for future workspace/versioning needs. Runs on both clusters.
+- **tabby**: Self-hosted AI coding assistant frontend/server. Runs on Talos II with PVC-backed `/data`, an app-local Secret for `config.toml` + JWT secret, and a Tailscale-exposed HTTP service.
 
 ### Memory
 

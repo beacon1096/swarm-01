@@ -10,6 +10,7 @@ resources:
   - ./namespace.yaml
   - ./tigerfs/ks.yaml
   - ./openviking/ks.yaml
+  - ./tabby/ks.yaml
   - ./memoh/ks.yaml
   - ./zeroclaw-kether/ks.yaml
   # Remaining agents — uncomment after kether canary passes
