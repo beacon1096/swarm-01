@@ -1,24 +1,18 @@
 ---
-# Routes to attic via node-level tailscale (direct connection)
-# instead of tailscale operator egress proxy (which relays via DERP)
+# Routes to attic on talos-ii via tailscale operator egress proxy.
+# The operator creates a proxy pod that relays traffic to
+# attic.tail5d550.ts.net, making attic reachable from any pod
+# on talos-i (including DinD containers spawned by forgejo-runner).
 apiVersion: v1
 kind: Service
 metadata:
   name: attic-ts
+  annotations:
+    tailscale.com/tailnet-fqdn: "attic.tail5d550.ts.net"
 spec:
-  clusterIP: None
+  type: ExternalName
+  externalName: placeholder
   ports:
     - name: http
       port: 8080
       protocol: TCP
----
-apiVersion: v1
-kind: Endpoints
-metadata:
-  name: attic-ts
-subsets:
-  - addresses:
-      - ip: 100.67.28.105
-    ports:
-      - name: http
-        port: 8080
