@@ -1,5 +1,5 @@
 mem0ai==1.0.5
-fastapi==0.115.8
+fastapi==0.136.1
 uvicorn==0.34.0
 python-dotenv==1.0.1
 ollama==0.6.1
