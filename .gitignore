@@ -13,6 +13,10 @@
 # Kubernetes
 *kubeconfig
 talosconfig
+# Harvester management kubeconfigs (sensitive credentials, keep local only)
+/talos-i-hvst.yaml
+/talos-ii-hvst.yaml
+/harvester_kubeconfig
 # Misc.
 .kube/
 .private/
