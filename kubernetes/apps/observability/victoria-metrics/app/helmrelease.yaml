@@ -12,6 +12,8 @@ spec:
     # -- VM Operator: auto-convert Prometheus CRDs (ServiceMonitor, PodMonitor, etc.)
     victoria-metrics-operator:
       enabled: true
+      image:
+        tag: v0.68.2
       operator:
         disable_prometheus_converter: false
       env:
@@ -34,6 +36,10 @@ spec:
       spec:
         retentionPeriod: "90d"
         replicaCount: 1
+        # Pin to virt-02 so the RWO PVC stays on a fixed Harvester host
+        # (Harvester CSI hot-plug bug surfaces when this volume migrates between VMs)
+        nodeSelector:
+          kubernetes.io/hostname: virt-02
         storage:
           accessModes: ["ReadWriteOnce"]
           storageClassName: harvester
@@ -70,6 +76,22 @@ spec:
     # -- Grafana
     grafana:
       enabled: true
+      image:
+        registry: registry.beaco.works
+        repository: docker.io/grafana/grafana
+      # Pin to virt-01 so the RWO PVC stays on a fixed Harvester host
+      nodeSelector:
+        kubernetes.io/hostname: virt-01
+      deploymentStrategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxSurge: 0
+          maxUnavailable: 1
+      initChownData:
+        image:
+          registry: registry.beaco.works
+          repository: docker.io/library/busybox
+          tag: "1.36"
       plugins:
         - victoriametrics-metrics-datasource
         - victoriametrics-logs-datasource
