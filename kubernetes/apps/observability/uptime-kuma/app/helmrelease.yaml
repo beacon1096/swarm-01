@@ -9,6 +9,10 @@ spec:
     name: uptime-kuma
   interval: 1h
   values:
+    defaultPodOptions:
+      # Pin to virt-02 so the RWO PVC stays on a fixed Harvester host
+      nodeSelector:
+        kubernetes.io/hostname: virt-02
     controllers:
       uptime-kuma:
         containers:

@@ -11,6 +11,9 @@ spec:
   values:
     server:
       retentionPeriod: 30d
+      # Pin to virt-01 so the RWO PVC stays on a fixed Harvester host
+      nodeSelector:
+        kubernetes.io/hostname: virt-01
       persistentVolume:
         enabled: true
         storageClassName: harvester

@@ -12,8 +12,6 @@ spec:
     # -- VM Operator: auto-convert Prometheus CRDs (ServiceMonitor, PodMonitor, etc.)
     victoria-metrics-operator:
       enabled: true
-      image:
-        tag: v0.68.2
       operator:
         disable_prometheus_converter: false
       env:
@@ -76,9 +74,6 @@ spec:
     # -- Grafana
     grafana:
       enabled: true
-      image:
-        registry: registry.beaco.works
-        repository: docker.io/grafana/grafana
       # Pin to virt-01 so the RWO PVC stays on a fixed Harvester host
       nodeSelector:
         kubernetes.io/hostname: virt-01
@@ -87,11 +82,6 @@ spec:
         rollingUpdate:
           maxSurge: 0
           maxUnavailable: 1
-      initChownData:
-        image:
-          registry: registry.beaco.works
-          repository: docker.io/library/busybox
-          tag: "1.36"
       plugins:
         - victoriametrics-metrics-datasource
         - victoriametrics-logs-datasource
