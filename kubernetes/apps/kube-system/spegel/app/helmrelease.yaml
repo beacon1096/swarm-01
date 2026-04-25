@@ -12,8 +12,21 @@ spec:
     spegel:
       containerdSock: /run/containerd/containerd.sock
       containerdRegistryConfigPath: /etc/cri/conf.d/hosts
-      additionalMirrorTargets:
-        - http://172.16.107.41:5000
+      # Keep the Talos-rendered hosts.toml as fallback (registry.beaco.works,
+      # upstream). Without this Spegel REPLACES the per-registry hosts.toml so
+      # any image not yet cached in the cluster fails with "not found".
+      prependExisting: true
+      # Without an explicit list, Spegel only writes _default/hosts.toml and
+      # never prepends its peers to the per-registry hosts.toml that Talos
+      # rendered. We must list every registry the Talos `mirrors` config covers.
+      mirroredRegistries:
+        - https://docker.io
+        - https://ghcr.io
+        - https://quay.io
+        - https://registry.k8s.io
+        - https://code.forgejo.org
+        - https://docker.elastic.co
+      # additionalMirrorTargets is set per-cluster in kubernetes/flux/<cluster>/ks.yaml
     service:
       registry:
         hostPort: 29999
