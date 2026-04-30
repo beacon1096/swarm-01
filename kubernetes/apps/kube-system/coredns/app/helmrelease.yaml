@@ -31,6 +31,14 @@ spec:
             configBlock: |-
               lameduck 5s
           - name: ready
+          # Rewrite tailnet hostname for attic (running on talos-ii) to
+          # the in-cluster ExternalName Service, which CNAMEs through to
+          # the tailscale-operator-managed egress proxy. Lets pods on
+          # talos-i hit `http://attic.tail5d550.ts.net/` directly without
+          # carrying a `:8080` port suffix that attic's allowed-hosts
+          # would otherwise need to whitelist.
+          - name: rewrite
+            parameters: name attic.tail5d550.ts.net attic-ts.development.svc.cluster.local
           - name: kubernetes
             parameters: cluster.local in-addr.arpa ip6.arpa
             configBlock: |-
