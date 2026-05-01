@@ -156,7 +156,7 @@ module "mux" {
 module "opencode" {
   count    = data.coder_workspace.me.start_count
   source   = "registry.coder.com/coder-labs/opencode/coder"
-  version  = "0.1.1"
+  version  = "0.1.2"
   agent_id = coder_agent.main.id
   workdir  = "/home/coder"
 }
