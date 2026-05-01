@@ -15,7 +15,7 @@ spec:
           app:
             image:
               repository: docker.io/redis
-              tag: "7-alpine"
+              tag: "8-alpine"
             ports:
               - containerPort: 6379
             resources:
