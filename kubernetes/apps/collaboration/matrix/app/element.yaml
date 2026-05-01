@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
         - name: element-web
-          image: ghcr.io/element-hq/element-web:v1.12.12
+          image: ghcr.io/element-hq/element-web:v1.12.17
           ports:
             - containerPort: 80
           env:
