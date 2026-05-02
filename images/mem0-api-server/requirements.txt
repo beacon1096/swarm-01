@@ -2,7 +2,7 @@ mem0ai==1.0.5
 fastapi==0.115.8
 uvicorn==0.34.0
 python-dotenv==1.0.1
-ollama==0.6.1
+ollama==0.6.2
 psycopg[binary,pool]==3.3.3
 langchain-neo4j==0.8.0
 rank-bm25==0.2.2
